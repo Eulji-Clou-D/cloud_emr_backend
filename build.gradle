@@ -24,15 +24,42 @@ repositories {
 }
 
 dependencies {
+	// JDBC 기반 데이터베이스 액세스 모듈
 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+	// 웹 애플리케이션 및 REST API 구현 모듈
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	// JPA 기반 ORM 데이터베이스 액세스 모듈
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+	// 롬복 모듈 (@Getter, @Setter, @ToString)
 	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'com.h2database:h2'
-	runtimeOnly 'com.mysql:mysql-connector-j'
 	annotationProcessor 'org.projectlombok:lombok'
+
+	// h2 모듈 (테스트용 임베디드 데이터베이스)
+	runtimeOnly 'com.h2database:h2'
+
+	// MySQL 모듈 (MySQL 데이터베이스 연동)
+	runtimeOnly 'com.mysql:mysql-connector-j'
+
+	// JUnit 테스트 모듈
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	// 데이터 유효성 검사 기능 모듈 (@NotNull, @Size, @Email, @Patter)
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	// JWT 모듈
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+	// 인증 및 권한 부여를 위한 스프링 시큐리티 모듈
+	// implementation 'org.springframework.boot:spring-boot-starter-security'
+
+
+
 }
 
 tasks.named('test') {
