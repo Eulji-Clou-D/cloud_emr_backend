@@ -4,8 +4,8 @@ import com.cloud.emr.Affair.CheckIn.dto.CheckInListResponse;
 import com.cloud.emr.Affair.CheckIn.dto.CheckInRequest;
 import com.cloud.emr.Affair.CheckIn.entity.CheckInEntity;
 import com.cloud.emr.Affair.CheckIn.repository.CheckInRepository;
+import com.cloud.emr.Affair.Patient.entity.PatientEntity;
 import com.cloud.emr.Main.User.entity.UserEntity;
-import com.cloud.emr.Main.User.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +20,9 @@ public class CheckInService {
     private CheckInRepository checkInRepository;
 
     // 1. 접수 등록 메서드
-    public CheckInEntity createCheckIn(CheckInRequest checkInRequest, UserEntity userEntity) {
+    public CheckInEntity createCheckIn(CheckInRequest checkInRequest, UserEntity userEntity, PatientEntity patientEntity) {
         // CheckInRequest를 CheckInEntity로 변환
-        CheckInEntity checkInEntity = checkInRequest.toCheckInEntity(userEntity);
+        CheckInEntity checkInEntity = checkInRequest.toCheckInEntity(userEntity, patientEntity);
         // 접수 정보 저장
         return checkInRepository.save(checkInEntity);
     }
@@ -36,7 +36,7 @@ public class CheckInService {
             // 각 CheckInEntity를 CheckInListResponse로 변환
             CheckInListResponse response = new CheckInListResponse(
                     checkInEntity.getCheckInId(),    // 접수 ID
-                    checkInEntity.getPatientNo(),    // 환자 번호
+                    checkInEntity.getPatientEntity().getPatientNo(),    // 환자 번호
                     checkInEntity.getCheckInPurpose(), // 접수 목적
                     checkInEntity.getUserEntity().getUserName() // 접수한 유저 이름
             );

@@ -5,6 +5,9 @@ import com.cloud.emr.Affair.CheckIn.dto.CheckInRequest;
 import com.cloud.emr.Affair.CheckIn.entity.CheckInEntity;
 import com.cloud.emr.Affair.CheckIn.repository.CheckInRepository;
 import com.cloud.emr.Affair.CheckIn.service.CheckInService;
+import com.cloud.emr.Affair.Patient.entity.PatientEntity;
+import com.cloud.emr.Affair.Patient.repository.PatientRepository;
+import com.cloud.emr.Affair.Patient.service.PatientService;
 import com.cloud.emr.Main.User.entity.UserEntity;
 import com.cloud.emr.Main.User.repository.UserRepository;
 import com.cloud.emr.Main.User.service.UserService;
@@ -28,14 +31,17 @@ public class CheckInController {
     private CheckInRepository checkInRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Autowired
-    private UserService userService;
+    private PatientService patientService;
+
+    @Autowired
+    private PatientRepository patientRepository;
 
     // 1. 접수 등록
     @PostMapping("/register")
-    public ResponseEntity<Object> registerCheckIn(@RequestParam CheckInRequest checkInRequest, @RequestParam Long userId) {
+    public ResponseEntity<Object> registerCheckIn(@RequestBody CheckInRequest checkInRequest, @RequestParam Long userId) {
         try {
             // 사용자 조회
             UserEntity userEntity = userService.findUserById(userId);
@@ -43,19 +49,19 @@ public class CheckInController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "User not found"));
             }
 
-            // 환자 번호 유효성 검사 (이미 존재하는 환자 번호는 중복을 피해야 함)
-            CheckInEntity existingCheckIn = checkInRepository.findByPatientNo(checkInRequest.getPatientNo());
-            if (existingCheckIn != null) {
-                return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("message", "Patient already checked in"));
+            // 이미 존재하는 환자여야 접수가 가능하도록
+            PatientEntity patientEntity = patientService.findPatientByNo(checkInRequest.getPatientNo());
+            if (patientEntity == null) {  // 환자 번호가 존재하지 않으면 접수 불가
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "Patient not found"));
             }
 
             // 접수 등록 처리
-            CheckInEntity newCheckIn = checkInService.createCheckIn(checkInRequest, userEntity);
+            CheckInEntity newCheckIn = checkInService.createCheckIn(checkInRequest, userEntity, patientEntity);
 
             // 응답 데이터 생성 (userId만 포함)
             Map<String, Object> responseData = Map.of(
                     "checkInId", newCheckIn.getCheckInId(),
-                    "patientNo", newCheckIn.getPatientNo(),
+                    "patientNo", newCheckIn.getPatientEntity().getPatientNo(),
                     "userId", userEntity.getUserId(), // userEntity에서 userId만 추출
                     "checkInDate", newCheckIn.getCheckInDate(),
                     "checkInPurpose", newCheckIn.getCheckInPurpose()

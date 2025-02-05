@@ -34,4 +34,5 @@ public class PatientService {
                 .map(PatientEntity::getPatientRrn) // PatientEntity에서 rrn 값만 추출
                 .orElseThrow(() -> new IllegalArgumentException("해당 환자의 주민번호를 찾을 수 없습니다. patientNo: " + patientNo));
     }
+
 }

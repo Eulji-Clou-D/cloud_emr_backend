@@ -14,7 +14,8 @@ public interface ReservationRepository extends JpaRepository<ReservationEntity, 
 
     List<ReservationEntity> findByReservationYn(String Y);
 
-    boolean existsByPatientNoAndReservationDate(Long patientNo, LocalDateTime reservationDate);
+    // 특정 환자(patientNo)와 예약 날짜(reservationDate)에 대한 예약이 존재하는지 확인
+    boolean existsByPatientEntity_PatientNoAndReservationDate(Long patientNo, LocalDateTime reservationDate);
 }
 
 /*

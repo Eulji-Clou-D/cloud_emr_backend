@@ -1,8 +1,8 @@
 package com.cloud.emr.Affair.CheckIn.entity;
 
+import com.cloud.emr.Affair.Patient.entity.PatientEntity;
 import com.cloud.emr.Main.User.entity.UserEntity;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,19 +22,20 @@ public class CheckInEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "checkIn_id", nullable = false)
-    private Long checkInId;
+    private Long checkInId;  // checkIn_id 컬럼과 매핑된 필드
 
-    // patientNo는 아직 PatientEntity와 연관되지 않아서, 컬럼으로만 존재
-    // 나중에 성철이가 만들면 연관관계 추가하겠습니다.
+    // 비식별관계 FK
+    // 다대일 (한 환자는 여러 접수가 가능)
     // 환자번호
-    @Size(min = 8, max = 8, message = "환자번호는 반드시 8자리여야 합니다.")
-    @Column(name = "patient_no", nullable = false, length = 8)
-    private Long patientNo;
-
-    // 다대일 (한 유저는 여러 접수가 가능)
-    // 사용자 ID
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id", columnDefinition = "BIGINT",  nullable = false)
+    @JoinColumn(name = "patient_no", referencedColumnName = "patient_no", nullable = false)
+    private PatientEntity patientEntity;  // 환자 정보와 연관
+
+    // 비식별관계 FK
+    // 다대일 (한 유저는 여러 접수가 가능)
+    // 사용자 IDa
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
     private UserEntity userEntity;
 
     // 접수 일자 시간 (접수된 시간)

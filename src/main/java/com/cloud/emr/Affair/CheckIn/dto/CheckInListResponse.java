@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class CheckInListResponse {
 
     @NotNull(message = "접수 ID는 필수 값입니다.")
-    @Column(nullable = false, columnDefinition = "INT")
+    @Column(nullable = false, columnDefinition = "BIGINT")
     private Long checkInId;    // 접수 ID
 
     @NotBlank(message = "환자번호는 필수 값입니다.")

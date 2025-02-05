@@ -2,6 +2,7 @@ package com.cloud.emr.Affair.CheckIn.dto;
 
 
 import com.cloud.emr.Affair.CheckIn.entity.CheckInEntity;
+import com.cloud.emr.Affair.Patient.entity.PatientEntity;
 import com.cloud.emr.Main.User.entity.UserEntity;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
@@ -25,9 +26,9 @@ public class CheckInRequest {
     private String checkInPurpose;
 
     // CheckInEntity로 변환
-    public CheckInEntity toCheckInEntity(UserEntity userEntity) {
+    public CheckInEntity toCheckInEntity(UserEntity userEntity, PatientEntity patientEntity) {
         return CheckInEntity.builder()
-                .patientNo(this.patientNo)
+                .patientEntity(patientEntity)
                 .userEntity(userEntity)
                 .checkInPurpose(this.checkInPurpose)
                 .build();

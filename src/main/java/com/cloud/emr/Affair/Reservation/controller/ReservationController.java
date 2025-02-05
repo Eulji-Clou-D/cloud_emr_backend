@@ -2,6 +2,7 @@ package com.cloud.emr.Affair.Reservation.controller;
 
 import com.cloud.emr.Affair.CheckIn.repository.CheckInRepository;
 import com.cloud.emr.Affair.Patient.entity.PatientEntity;
+import com.cloud.emr.Affair.Patient.repository.PatientRepository;
 import com.cloud.emr.Affair.Patient.service.PatientService;
 import com.cloud.emr.Affair.Reservation.dto.ReservationRegisterRequest;
 import com.cloud.emr.Affair.Reservation.dto.ReservationReadResponse;
@@ -39,17 +40,16 @@ public class ReservationController {
     @Autowired
     private UserService userService;
 
-    /*
-    @Autowired
-    private PatientEntity patientEntity;
 
     @Autowired
     private PatientService patientService;
-    */
+
+    @Autowired
+    private PatientRepository patientRepository;
 
     // 1. 환자 예약
     // 아직 미구현 (예약은 환자 접수가 되면 사라짐)
-    // 아직 미구현 (예약은 이미 환자로 등록되어 있는 상태여야 함)
+    // 구현 (예약은 이미 환자로 등록되어 있는 상태여야 함)
     @PostMapping("/register")
     public ResponseEntity<Object> registerReservation(@RequestBody ReservationRegisterRequest request, @RequestParam Long userId) {
         try {
@@ -59,16 +59,16 @@ public class ReservationController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "User not found"));
             }
 
-            /*
-            // 환자 정보 확인 (나중에 성철이 코드 보고 수정)
-            PatientEntity patientEntity = patientService.findByPatientNo(request.getPatientNo());
+
+            // 환자 정보 확인 
+            PatientEntity patientEntity = patientService.findPatientByNo(request.getPatientNo());
             if (patientEntity == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "등록되지 않은 환자입니다"));
             }
-            */
+
 
             // 예약 등록 처리
-            ReservationReadResponse response = reservationService.createReservation(request, userEntity);
+            ReservationReadResponse response = reservationService.createReservation(request, userEntity, patientEntity);
 
             // 성공적인 예약 처리
             return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(

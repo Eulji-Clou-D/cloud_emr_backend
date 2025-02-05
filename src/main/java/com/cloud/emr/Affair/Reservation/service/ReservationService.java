@@ -1,5 +1,7 @@
 package com.cloud.emr.Affair.Reservation.service;
 
+import com.cloud.emr.Affair.Patient.entity.PatientEntity;
+import com.cloud.emr.Affair.Patient.repository.PatientRepository;
 import com.cloud.emr.Affair.Reservation.dto.ReservationRegisterRequest;
 import com.cloud.emr.Affair.Reservation.dto.ReservationReadResponse;
 import com.cloud.emr.Affair.Reservation.dto.ReservationUpdateRequest;
@@ -20,20 +22,23 @@ public class ReservationService {
     @Autowired
     private ReservationRepository reservationRepository;
 
+    @Autowired
+    private PatientRepository patientRepository;
+
 
     // 1. 예약 등록
     @Transactional  // 트랜잭션을 적용하여 작업이 하나의 단위로 처리
-    public ReservationReadResponse createReservation(ReservationRegisterRequest request, UserEntity userEntity) {
+    public ReservationReadResponse createReservation(ReservationRegisterRequest request, UserEntity userEntity, PatientEntity patientEntity) {
 
         // 중복 예약 체크
-        boolean isDuplicate = reservationRepository.existsByPatientNoAndReservationDate(request.getPatientNo(), request.getReservationDate());
+        boolean isDuplicate = reservationRepository.existsByPatientEntity_PatientNoAndReservationDate(request.getPatientNo(), request.getReservationDate());
         if (isDuplicate) {
             throw new IllegalStateException("이미 예약된 시간입니다.");
         }
 
         // 예약 엔티티 생성 (예약 여부 'Y'로 바로 설정)
         ReservationEntity reservationEntity = ReservationEntity.builder()
-                .patientNo(request.getPatientNo())
+                .patientEntity(patientEntity)
                 .reservationDate(request.getReservationDate())
                 .reservationYn("Y") // 예약 완료 상태
                 .build();
@@ -44,7 +49,7 @@ public class ReservationService {
         // 예약 응답 생성
         return new ReservationReadResponse(
                 reservationEntity.getReservationId(),
-                reservationEntity.getPatientNo(),
+                reservationEntity.getPatientEntity().getPatientNo(),
                 reservationEntity.getReservationDate(),
                 reservationEntity.getReservationYn()
         );
@@ -61,7 +66,7 @@ public class ReservationService {
             // 예약 목록에 필요한 정보만 담아서 응답 생성
             ReservationReadResponse response = new ReservationReadResponse(
                     reservationEntity.getReservationId(),
-                    reservationEntity.getPatientNo(),
+                    reservationEntity.getPatientEntity().getPatientNo(),
                     reservationEntity.getReservationDate(),
                     reservationEntity.getReservationYn() // 예약 날짜 시간
             );
@@ -79,7 +84,7 @@ public class ReservationService {
         // 빌더로 업데이트된 예약 엔티티 생성
         ReservationEntity updatedReservationEntity = ReservationEntity.builder()
                 .reservationId(reservationEntity.getReservationId())
-                .patientNo(reservationEntity.getPatientNo()) // patientNo는 String 타입으로 그대로 사용
+                .patientEntity(reservationEntity.getPatientEntity())
                 .reservationDate(
                         updateRequest.getNewReservationDate() != null ? updateRequest.getNewReservationDate() : reservationEntity.getReservationDate() // 예약 날짜 변경만 할 수도 있음
                 )
@@ -96,7 +101,7 @@ public class ReservationService {
         // 반환할 DTO 생성
         return new ReservationReadResponse(
                 updatedReservationEntity.getReservationId(),
-                updatedReservationEntity.getPatientNo(),
+                updatedReservationEntity.getPatientEntity().getPatientNo(),
                 updatedReservationEntity.getReservationDate(),
                 updatedReservationEntity.getReservationYn()
         );
