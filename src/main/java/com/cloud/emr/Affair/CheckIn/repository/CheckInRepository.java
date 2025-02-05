@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 public interface CheckInRepository extends JpaRepository<CheckInEntity, Long> {
 
 
-
 }
 
 /*

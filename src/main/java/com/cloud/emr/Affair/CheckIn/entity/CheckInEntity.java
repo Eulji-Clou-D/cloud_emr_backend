@@ -31,6 +31,7 @@ public class CheckInEntity {
     @JoinColumn(name = "patient_no", referencedColumnName = "patient_no", nullable = false)
     private PatientEntity patientEntity;  // 환자 정보와 연관
 
+
     // 비식별관계 FK
     // 다대일 (한 유저는 여러 접수가 가능)
     // 사용자 IDa

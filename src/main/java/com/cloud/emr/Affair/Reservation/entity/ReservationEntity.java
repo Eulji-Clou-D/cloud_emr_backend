@@ -31,6 +31,7 @@ public class ReservationEntity {
     @JoinColumn(name = "patient_no", referencedColumnName = "patient_no", nullable = false)
     private PatientEntity patientEntity;
 
+
     // 예약 날짜 시간 (사용자 입력)
     @Column(name = "reservation_datetime")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
