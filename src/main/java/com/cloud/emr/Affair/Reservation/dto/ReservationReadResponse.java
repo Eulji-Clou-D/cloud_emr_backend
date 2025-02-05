@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class ReservationReadResponse {
 
     private Long reservationId; // 예약 ID
-    private String patientNo; // 환자 번호
+    private Long patientNo; // 환자 번호
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime reservationDate; // 예약 날짜 시간 (변경 없이 최초 예약된 날짜)
     private String reservationYn; // 예약 여부

@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 // 환자 예약
 public class ReservationRegisterRequest {
 
-    private String patientNo; // 환자 번호
+    private Long patientNo; // 환자 번호
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime reservationDate; // 예약 날짜 시간
 

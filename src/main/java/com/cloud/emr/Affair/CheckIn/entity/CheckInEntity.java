@@ -29,12 +29,12 @@ public class CheckInEntity {
     // 환자번호
     @Size(min = 8, max = 8, message = "환자번호는 반드시 8자리여야 합니다.")
     @Column(name = "patient_no", nullable = false, length = 8)
-    private String patientNo;
+    private Long patientNo;
 
     // 다대일 (한 유저는 여러 접수가 가능)
     // 사용자 ID
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id", columnDefinition = "INT",  nullable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id", columnDefinition = "BIGINT",  nullable = false)
     private UserEntity userEntity;
 
     // 접수 일자 시간 (접수된 시간)

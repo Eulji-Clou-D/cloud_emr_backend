@@ -22,7 +22,7 @@ import java.util.Date;
 public class PatientEntity {
     //환자번호
     @Id
-//    @Size(min=8, max=8, message = "환자번호는 반드시 8자리여야 합니다.")
+    //    @Size(min=8, max=8, message = "환자번호는 반드시 8자리여야 합니다.")
     @Column(name = "patient_no")
     private Long patientNo;
 

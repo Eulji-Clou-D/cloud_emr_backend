@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 public interface CheckInRepository extends JpaRepository<CheckInEntity, Long> {
 
     // 환자번호로 접수를 찾는 메서드 추가
-    CheckInEntity findByPatientNo(String patientNo);
+    CheckInEntity findByPatientNo(Long patientNo);
 }
 
 /*

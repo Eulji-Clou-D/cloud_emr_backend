@@ -26,7 +26,7 @@ public class ReservationEntity {
     // 나중에 접수가 완료될 시 예약이 제거되도록
 
     @Column(name = "patient_no", nullable = false, length = 8)
-    private String patientNo; // 환자 번호
+    private Long patientNo; // 환자 번호
 
     // 예약 날짜 시간 (사용자 입력)
     @Column(name = "reservation_datetime")

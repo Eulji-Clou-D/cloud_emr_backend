@@ -2,7 +2,6 @@ package com.cloud.emr.Affair.Patient.controller;
 
 
 import com.cloud.emr.Affair.Patient.dto.PatientRegisterRequest;
-import com.cloud.emr.Affair.Patient.dto.PatientSearchResponse;
 import com.cloud.emr.Affair.Patient.entity.PatientEntity;
 import com.cloud.emr.Affair.Patient.repository.PatientRepository;
 import com.cloud.emr.Affair.Patient.service.PatientService;

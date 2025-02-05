@@ -20,7 +20,7 @@ public class CheckInListResponse {
     @NotBlank(message = "환자번호는 필수 값입니다.")
     @Size(min = 8, max = 8, message = "환자번호는 반드시 8자리여야 합니다.")
     @Column(nullable = false, length = 8)
-    private String patientNo;  // 환자 번호
+    private Long patientNo;  // 환자 번호
 
     @NotNull(message = "접수 목적은 필수 값입니다.")
     @Size(max = 100, message = "접수 목적은 최대 500자까지 가능합니다.")
