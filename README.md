@@ -31,7 +31,7 @@ github issue 생성하기<br>
 ## 대분류 패키지 Naming
 - 메인: Main    
   - 메인화면 및 공통 관련 리소스 관리 
-- 원무: Affair
+- 원무: Reception
   - 원무 데이터 관리
 - 보험: Insurance
   - 보험 관련
@@ -44,21 +44,10 @@ github issue 생성하기<br>
 - 간호: Nursing
   - 간호관련
 
-## 중분류 패키지 Naming
-- 메인: Main [대분류 패키지]
-  - 유저: User 
-- 원무: Affair [대분류 패키지]
-  - 환자 Patient 
-  - 접수 CheckIn
-  - 예약 Reservation
-
-
 ## 소규모 패키지 Naming
 - config
 - controller
 - dto
-  - request : 요청하는 DTO
-  - Response : 결과물을 주는 DTO (응답)
 - entity
 - repository
 - service
