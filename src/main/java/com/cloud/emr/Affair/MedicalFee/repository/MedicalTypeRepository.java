@@ -9,4 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface MedicalTypeRepository extends JpaRepository<MedicalTypeEntity, Long> {
+    MedicalTypeEntity findByMedicalTypeName(String medicalTypeName);
 }

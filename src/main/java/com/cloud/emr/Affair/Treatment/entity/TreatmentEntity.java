@@ -13,7 +13,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.util.Date;
 
 @Entity(name = "Treatment")
-@Builder
+@Builder(toBuilder = true)
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -54,8 +54,5 @@ public class TreatmentEntity {
     @Column(name = "treatment_total_fee")
     private Long treatmentTotalFee;
 
-    public void setTreatmentTotalFee(Long totalFee) {
-        this.treatmentTotalFee = totalFee;
-    }
 
 }

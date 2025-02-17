@@ -54,22 +54,31 @@ public class MedicalFeeService {
                 .mapToLong(medicalFee -> medicalFee.getMedicalTypeEntity().getMedicalTypeFee())
                 .sum();
 
-        TreatmentEntity setTreatment = treatmentRepository.findById(treatmentId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 진료 없음 : " + treatmentId));
+        // 기존 객체의 필드를 유지하면서 새로운 값만 변경
+        TreatmentEntity updatedTreatment = TreatmentEntity.builder()
+                .treatmentId(treatment.getTreatmentId())
+                .checkInEntity(treatment.getCheckInEntity())
+                .treatmentDate(treatment.getTreatmentDate())
+                .treatmentStatus(treatment.getTreatmentStatus())
+                .treatmentNextDate(treatment.getTreatmentNextDate())
+                .treatmentComment(treatment.getTreatmentComment())
+                .treatmentDept(treatment.getTreatmentDept())
+                .treatmentDoc(treatment.getTreatmentDoc())
+                .treatmentTotalFee(totalFee) // 변경할 필드만 수정
+                .build();
 
-        setTreatment.setTreatmentTotalFee(totalFee);
-        treatmentRepository.save(setTreatment);
+        treatmentRepository.save(updatedTreatment);
 
         TreatmentResponse treatmentResponse = new TreatmentResponse(
-                setTreatment.getTreatmentId(),
-                setTreatment.getCheckInEntity().getCheckInId(),
-                setTreatment.getTreatmentDate(),
-                setTreatment.getTreatmentStatus(),
-                setTreatment.getTreatmentNextDate(),
-                setTreatment.getTreatmentComment(),
-                setTreatment.getTreatmentDept(),
-                setTreatment.getTreatmentDoc(),
-                setTreatment.getTreatmentTotalFee()
+                updatedTreatment.getTreatmentId(),
+                updatedTreatment.getCheckInEntity().getCheckInId(),
+                updatedTreatment.getTreatmentDate(),
+                updatedTreatment.getTreatmentStatus(),
+                updatedTreatment.getTreatmentNextDate(),
+                updatedTreatment.getTreatmentComment(),
+                updatedTreatment.getTreatmentDept(),
+                updatedTreatment.getTreatmentDoc(),
+                updatedTreatment.getTreatmentTotalFee()
         );
         return treatmentResponse;
 
