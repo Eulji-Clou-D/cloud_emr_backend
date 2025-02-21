@@ -2,7 +2,6 @@ package com.cloud.emr.Affair.Patient.service;
 
 import com.cloud.emr.Affair.Patient.entity.PatientEntity;
 import com.cloud.emr.Affair.Patient.repository.PatientRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

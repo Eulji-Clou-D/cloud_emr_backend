@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @Repository
 public interface PatientRepository extends JpaRepository<PatientEntity, String> {
+
     Optional<PatientEntity> findTopByOrderByPatientNoDesc();
 
     List<PatientEntity> findByPatientName(String patientName);

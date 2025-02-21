@@ -28,16 +28,11 @@ public class CheckInController {
     private CheckInService checkInService;
 
     @Autowired
-    private CheckInRepository checkInRepository;
-
-    @Autowired
     private UserService userService;
 
     @Autowired
     private PatientService patientService;
 
-    @Autowired
-    private PatientRepository patientRepository;
 
     // 1. 접수 등록
     @PostMapping("/register")

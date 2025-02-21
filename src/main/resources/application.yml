@@ -20,3 +20,4 @@ spring:
       hibernate:
         format_sql: true   # SQL 쿼리의 출력 포맷을 설정
         use_sql_comments: true # SQL에 주석을 추가하도록 설정
+
