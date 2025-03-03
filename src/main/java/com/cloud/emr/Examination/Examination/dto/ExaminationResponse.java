@@ -24,4 +24,5 @@ public class ExaminationResponse {
     private String examinationLocation;
 
     private String examinationPrice;
+
 }

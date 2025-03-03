@@ -7,6 +7,7 @@ build/
 
 # application-* 파일을 Git에서 제외
 application-*.yml
+application-mytest.yml
 
 # 예외: application-example.yml 파일은 Git에 포함
 !application-example.yml

@@ -1,4 +1,40 @@
 package com.cloud.emr.Examination.Equipment.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.Column;
+import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.util.Date;
+
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class EquipmentRegisterRequest {
+
+    @Column(nullable = false)
+    @NotBlank(message = "필수 값입니다.")
+    private String equipmentName;
+
+    @Column(nullable = false)
+    @NotBlank(message = "필수 값입니다.")
+    private String equipmentProductNumber;
+
+    @Column(nullable = false)
+    @NotBlank(message = "필수 값입니다.")
+    private String equipmentManufacturer;
+
+    @Column(nullable = false)
+    @NotBlank(message = "필수 값입니다.")
+    private String equipmentLocation;
+
+    @Column(nullable = false)
+    @NotBlank(message = "필수 값입니다.")
+    private String equipmentState;
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date equipmentSchedule;
+
 }

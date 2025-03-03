@@ -28,20 +28,20 @@ public class ExaminationEntity {
     @JoinColumn(name = "equipment_id", referencedColumnName = "equipment_id")
     private EquipmentEntity equipmentEntity;
 
-    @Column(name = "examination_name")
+    @Column(name = "examination_name", nullable = false)
     private String examinationName;
 
-    @Column(name = "examination_type")
+    @Column(name = "examination_type", nullable = false)
     private String examinationType;
 
     // 주의 사항, 금지 사항
     @Column(name = "examination_constraints")
     private String examinationConstraints;
 
-    @Column(name = "examination_location")
+    @Column(name = "examination_location", nullable = false)
     private String examinationLocation;
 
-    @Column(name = "examination_price")
+    @Column(name = "examination_price", nullable = false)
     private String examinationPrice;
 
     // 이 아래는 그냥 다른 테이블에서 가져와서 화면에 띄울까?

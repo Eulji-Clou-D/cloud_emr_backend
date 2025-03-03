@@ -1,10 +1,10 @@
-package com.cloud.emr.Examination.Examination.controller;
+package com.cloud.emr.Examination.Equipment.controller;
 
-import com.cloud.emr.Examination.Examination.dto.ExaminationRegisterRequest;
-import com.cloud.emr.Examination.Examination.dto.ExaminationResponse;
-import com.cloud.emr.Examination.Examination.dto.ExaminationUpdateRequest;
-import com.cloud.emr.Examination.Examination.entity.ExaminationEntity;
-import com.cloud.emr.Examination.Examination.service.ExaminationService;
+import com.cloud.emr.Examination.Equipment.dto.EquipmentRegisterRequest;
+import com.cloud.emr.Examination.Equipment.dto.EquipmentResponse;
+import com.cloud.emr.Examination.Equipment.dto.EquipmentUpdateRequest;
+import com.cloud.emr.Examination.Equipment.entity.EquipmentEntity;
+import com.cloud.emr.Examination.Equipment.service.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,19 +14,19 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/examination")
-public class ExaminationController {
+@RequestMapping("/api/equipment")
+public class EquipmentController {
 
-    private final ExaminationService examinationService;
+    private final EquipmentService equipmentService;
 
-    public ExaminationController(ExaminationService examinationService) {
-        this.examinationService = examinationService;
+    public EquipmentController(EquipmentService equipmentService) {
+        this.equipmentService = equipmentService;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Map<String, Object>> registerExamination(@RequestBody ExaminationRegisterRequest examinationRegisterRequest) {
+    public ResponseEntity<Map<String, Object>> registerEquipment(@RequestBody EquipmentRegisterRequest equipmentRegisterRequest) {
         try {
-            ExaminationEntity responseData = examinationService.registerExamination(examinationRegisterRequest);
+            EquipmentEntity responseData = equipmentService.registerEquipment(equipmentRegisterRequest);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
                     "message", "등록 성공",
@@ -43,17 +43,17 @@ public class ExaminationController {
 
 
 
-    @GetMapping("/read/{examinationId}")
-    public ResponseEntity<Map<String, Object>> viewExamination(@PathVariable Long examinationId) {
+    @GetMapping("/read/{equipmentId}")
+    public ResponseEntity<Map<String, Object>> viewEquipment(@PathVariable Long equipmentId) {
         try {
-            ExaminationResponse examinationResponse = examinationService.readExamination(examinationId);
-            if (examinationResponse == null) {
+            EquipmentResponse equipmentResponse = equipmentService.readEquipment(equipmentId);
+            if (equipmentResponse == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "검사 정보를 찾을 수 없습니다."));
             }
 
             return ResponseEntity.status(HttpStatus.OK).body(Map.of(
                     "message", "조회 성공",
-                    "data", examinationResponse
+                    "data", equipmentResponse
             ));
 
         } catch (Exception e) {
@@ -65,13 +65,13 @@ public class ExaminationController {
         }
     }
 
-    @GetMapping("/read/{equipmentID}")
-    public ResponseEntity<Map<String, Object>> getExaminationByEquipmentId(@PathVariable Long equipmentID) {
+    @GetMapping("/read/{equipmentName}")
+    public ResponseEntity<Map<String, Object>> getEquipmentByEquipmentName(@PathVariable String equipmentName) {
         try {
-            List<ExaminationResponse> examinationResponses = examinationService.readExaminationByEuipmentId(equipmentID);
+            List<EquipmentResponse> equipmentResponses = equipmentService.readEquipmentByEquipmentName(equipmentName);
             return ResponseEntity.status(HttpStatus.OK).body(Map.of(
                     "message", "부분 조회 성공",
-                    "data", examinationResponses
+                    "data", equipmentResponses
             ));
         } catch (Exception e) {
 
@@ -84,12 +84,12 @@ public class ExaminationController {
 
     // 3. 장애인 정보 전체 조회
     @GetMapping("/read/all")
-    public ResponseEntity<Map<String, Object>> getAllExaminationInfo() {
+    public ResponseEntity<Map<String, Object>> getAllEquipmentInfo() {
         try {
-            List<ExaminationResponse> examinationResponses = examinationService.readAllExamination();
+            List<EquipmentResponse> equipmentResponses = equipmentService.readAllEquipment();
             return ResponseEntity.status(HttpStatus.OK).body(Map.of(
                     "message", "전체 조회 성공",
-                    "data", examinationResponses
+                    "data", equipmentResponses
             ));
         } catch (Exception e) {
 
@@ -101,13 +101,13 @@ public class ExaminationController {
     }
 
     // 4. 장애인 정보 수정
-    @PostMapping("/update/{examinationId}")
-    public ResponseEntity<Map<String, Object>> updateExamination(
-            @PathVariable Long examinationId,
-            @RequestBody ExaminationUpdateRequest examinationUpdateRequest) {
+    @PostMapping("/update/{equipmentId}")
+    public ResponseEntity<Map<String, Object>> updateEquipment(
+            @PathVariable Long equipmentId,
+            @RequestBody EquipmentUpdateRequest equipmentUpdateRequest) {
 
         try {
-            ExaminationEntity updatedData = examinationService.updateExamination(examinationId, examinationUpdateRequest);
+            EquipmentEntity updatedData = equipmentService.updateEquipment(equipmentId, equipmentUpdateRequest);
 
             return ResponseEntity.status(HttpStatus.OK).body(Map.of(
                     "message", "수정 성공",
@@ -123,15 +123,15 @@ public class ExaminationController {
 
 
     // 5. 장애인 정보 삭제
-    @PostMapping("/delete/{examinationId}")
-    public ResponseEntity<Map<String, Object>> deleteExamination(@PathVariable Long examinationId) {
+    @PostMapping("/delete/{equipmentId}")
+    public ResponseEntity<Map<String, Object>> deleteEquipment(@PathVariable Long equipmentId) {
         try {
 
-            ExaminationResponse deletedExamination = examinationService.deleteExamination(examinationId);
+            EquipmentResponse deletedEquipment = equipmentService.deleteEquipment(equipmentId);
 
             return ResponseEntity.status(HttpStatus.OK).body(Map.of(
                     "message", "삭제 성공",
-                    "deletedExamination", deletedExamination
+                    "deletedEquipment", deletedEquipment
             ));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(

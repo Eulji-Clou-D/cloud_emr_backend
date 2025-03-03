@@ -18,16 +18,15 @@ import java.util.stream.Collectors;
 
 @Service
 public class ExaminationService {
+    
+    private final ExaminationRepository examinationRepository;
 
+    private final EquipmentRepository equipmentRepository;
 
-    @Autowired
-    private ExaminationRepository examinationRepository;
-
-    @Autowired
-    private EquipmentRepository equipmentRepository;
-
-//    @Autowired
-//    private EquipmentService equipmentService;
+    public ExaminationService(EquipmentRepository equipmentRepository, ExaminationRepository examinationRepository) {
+        this.examinationRepository = examinationRepository;
+        this.equipmentRepository = equipmentRepository;
+    }
 
     public ExaminationEntity registerExamination(ExaminationRegisterRequest examinationRegisterRequest) {
 
@@ -51,7 +50,7 @@ public class ExaminationService {
 
     public ExaminationResponse readExamination(Long examinationId) {
 
-        Optional<ExaminationEntity> examinationEntityOptional = examinationRepository.findByExaminationId(examinationId);
+        Optional<ExaminationEntity> examinationEntityOptional = examinationRepository.findByExaminationIdOptional(examinationId);
 
         if (examinationEntityOptional.isPresent()) {
             ExaminationEntity examinationEntity = examinationEntityOptional.get();
@@ -72,10 +71,8 @@ public class ExaminationService {
 
     public List<ExaminationResponse> readExaminationByEuipmentId(Long equipmentID) {
 
-        EquipmentEntity foundEquipment = equipmentRepository.findByEquipmentId(equipmentID);
-        if (foundEquipment == null) {
-            throw new IllegalStateException("장비를 찾을 수 없습니다.");
-        }
+        EquipmentEntity foundEquipment = equipmentRepository.findByEquipmentIdOptional(equipmentID)
+                .orElseThrow(() -> new RuntimeException("해당 장비 정보가 없습니다."));
 
         List<ExaminationEntity> examinationEntities = examinationRepository.findAllByEquipmentEntity(foundEquipment);
 
@@ -114,7 +111,7 @@ public class ExaminationService {
     @Transactional
     public ExaminationEntity updateExamination(Long examinationId, ExaminationUpdateRequest examinationUpdateRequest) {
 
-        Optional<ExaminationEntity> examinationEntityOptional = examinationRepository.findByExaminationId(examinationId);
+        Optional<ExaminationEntity> examinationEntityOptional = examinationRepository.findByExaminationIdOptional(examinationId);
 
         if (examinationEntityOptional.isPresent()) {
             EquipmentEntity foundEquipment = null;
@@ -122,16 +119,13 @@ public class ExaminationService {
             Long equipmentId = examinationEntityOptional.get().getEquipmentEntity().getEquipmentId();
 
             if (equipmentId != null) {
-                foundEquipment = equipmentRepository.findByEquipmentId(equipmentId);
+                foundEquipment = equipmentRepository.findByEquipmentIdOptional(equipmentId)
+                        .orElseThrow(() -> new RuntimeException("기존 해당 장비 정보가 없습니다."));
             }
 
-            try {
-                if (examinationUpdateRequest.getEquipmentId() != null) {
-                    foundEquipment = equipmentRepository.findByEquipmentId(examinationUpdateRequest.getEquipmentId());
-                }
-            } catch (Exception e) {
-                System.out.println("Examination Update : " + e);
-                throw new RuntimeException("해당 장비 정보가 없습니다.");
+            if (examinationUpdateRequest.getEquipmentId() != null) {
+                foundEquipment = equipmentRepository.findByEquipmentIdOptional(examinationUpdateRequest.getEquipmentId())
+                        .orElseThrow(() -> new RuntimeException("갱신하려는 해당 장비 정보가 없습니다."));
             }
 
             ExaminationEntity updatedEntity = ExaminationEntity.builder()
@@ -152,8 +146,8 @@ public class ExaminationService {
     @Transactional
     public ExaminationResponse deleteExamination(Long examinationID) {
 
-        ExaminationEntity examinationEntity = examinationRepository.findByExaminationId(examinationID)
-                          .orElseThrow(() -> new RuntimeException("해당 검사 정보가 없습니다."));;
+        ExaminationEntity examinationEntity = examinationRepository.findByExaminationIdOptional(examinationID)
+                          .orElseThrow(() -> new RuntimeException("해당 검사 정보가 없습니다."));
 
         ExaminationResponse deletedExamination = new ExaminationResponse(
                 examinationEntity.getExaminationId(),
