@@ -17,10 +17,10 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 import com.cloud.emr.Affair.Patient.entity.PatientEntity;
-import com.cloud.emr.Affair.Treatment.entity.TreatmentEntity;
+import com.cloud.emr.Treatment.Treatment.entity.TreatmentEntity;
 import com.cloud.emr.Main.User.entity.UserEntity;
 
-@Entity(name = "ExaminationSchedule")
+@Entity(name = "Examination_Schedule")
 @Getter
 @Builder
 @AllArgsConstructor

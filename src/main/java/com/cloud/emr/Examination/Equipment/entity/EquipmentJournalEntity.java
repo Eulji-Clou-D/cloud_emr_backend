@@ -18,7 +18,7 @@ import java.util.Date;
 
 import com.cloud.emr.Main.User.entity.UserEntity;
 
-@Entity(name = "ExaminationJournal")
+@Entity(name = "Equipment_Journal")
 @Getter
 @Builder
 @AllArgsConstructor

@@ -17,13 +17,13 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 import com.cloud.emr.Affair.Patient.entity.PatientEntity;
-import com.cloud.emr.Affair.Treatment.entity.TreatmentEntity;
+import com.cloud.emr.Treatment.Treatment.entity.TreatmentEntity;
 import com.cloud.emr.Main.User.entity.UserEntity;
 // TODO: Make Doctor Entity
 // import com.cloud.emr.Main.User.entity.DoctorEntity;
 import com.cloud.emr.Examination.Equipment.entity.EquipmentEntity;
 
-@Entity(name = "ExaminationJournal")
+@Entity(name = "Examination_Journal")
 @Getter
 @Builder
 @AllArgsConstructor

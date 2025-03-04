@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
-@Entity(name = "Examination")
+@Entity(name = "Equipment")
 @Getter
 @Builder
 @AllArgsConstructor

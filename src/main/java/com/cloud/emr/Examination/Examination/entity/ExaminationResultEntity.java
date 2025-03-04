@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 import com.cloud.emr.Affair.Patient.entity.PatientEntity;
-import com.cloud.emr.Affair.Treatment.entity.TreatmentEntity;
+import com.cloud.emr.Treatment.Treatment.entity.TreatmentEntity;
 
-@Entity(name = "ExaminationResult")
+@Entity(name = "Examination_Result")
 @Getter
 @Builder
 @AllArgsConstructor
