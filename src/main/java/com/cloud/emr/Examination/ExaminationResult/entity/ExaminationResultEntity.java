@@ -1,5 +1,7 @@
-package com.cloud.emr.Examination.Examination.entity;
+package com.cloud.emr.Examination.ExaminationResult.entity;
 
+import com.cloud.emr.Affair.Patient.entity.PatientEntity;
+import com.cloud.emr.Treatment.Treatment.entity.TreatmentEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -8,9 +10,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
-
-import com.cloud.emr.Affair.Patient.entity.PatientEntity;
-import com.cloud.emr.Treatment.Treatment.entity.TreatmentEntity;
 
 @Entity(name = "Examination_Result")
 @Getter
@@ -26,7 +25,7 @@ public class ExaminationResultEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "examination_id", referencedColumnName = "examination_id", nullable = false)
-    private ExaminationEntity ExaminationEntity;
+    private com.cloud.emr.Examination.ExaminationResult.entity.ExaminationEntity ExaminationEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_no", referencedColumnName = "patient_no", nullable = false)

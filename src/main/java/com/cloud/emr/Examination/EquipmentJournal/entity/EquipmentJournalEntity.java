@@ -1,22 +1,14 @@
-package com.cloud.emr.Examination.Equipment.entity;
+package com.cloud.emr.Examination.EquipmentJournal.entity;
 
+import com.cloud.emr.Main.User.entity.UserEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
-
-import com.cloud.emr.Main.User.entity.UserEntity;
 
 @Entity(name = "Equipment_Journal")
 @Getter
@@ -32,7 +24,7 @@ public class EquipmentJournalEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "equipment_id", referencedColumnName = "equipment_id", nullable = false)
-    private EquipmentEntity EquipmentEntity;
+    private com.cloud.emr.Examination.EquipmentJournal.entity.EquipmentEntity EquipmentEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
