@@ -1,4 +1,4 @@
-package com.cloud.emr.Examination.EquipmentJournal.dto;
+package com.cloud.emr.Examination.EquipmentInspection.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;
@@ -12,7 +12,11 @@ import java.util.Date;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class EquipmentJournalRegisterRequest {
+public class EquipmentInspectionRegisterRequest {
+
+    @Column(nullable = false)
+    @NotBlank(message = "필수 값입니다.")
+    private Long equipmentId;
 
     @Column(nullable = false)
     @NotBlank(message = "필수 값입니다.")
@@ -32,9 +36,25 @@ public class EquipmentJournalRegisterRequest {
 
     @Column(nullable = false)
     @NotBlank(message = "필수 값입니다.")
-    private String equipmentState;
+    private Long userId;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date equipmentSchedule;
+    @Column(nullable = false)
+    @NotBlank(message = "필수 값입니다.")
+    private String userName;
+
+    @Column(nullable = false)
+    @NotBlank(message = "필수 값입니다.")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    private Date equipmentInspectionDate;
+
+    @Column(nullable = false)
+    @NotBlank(message = "필수 값입니다.")
+    private String equipmentInspectionResult;
+
+    @Column(nullable = false)
+    @NotBlank(message = "필수 값입니다.")
+    private String equipmentInspectionRecords;
+
+    private String equipmentInspectionNotes;
 
 }

@@ -1,4 +1,4 @@
-package com.cloud.emr.Examination.EquipmentJournal.entity;
+package com.cloud.emr.Examination.EquipmentInspection.entity;
 
 import com.cloud.emr.Main.User.entity.UserEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -10,34 +10,39 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
-@Entity(name = "Equipment_Journal")
+import com.cloud.emr.Examination.Equipment.entity.EquipmentEntity;
+
+@Entity(name = "Equipment_Inspection")
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class EquipmentJournalEntity {
+public class EquipmentInspectionEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "equipment_journal_id", nullable = false)
-    private Long equipmentJournalId;
+    @Column(name = "equipment_inspection_id", nullable = false)
+    private Long equipmentInspectionId;
 
+    // for equipmentId and equipmentName and equipmentProductNumber and equipmentManufacturer and equipmentLocation
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "equipment_id", referencedColumnName = "equipment_id", nullable = false)
-    private com.cloud.emr.Examination.EquipmentJournal.entity.EquipmentEntity EquipmentEntity;
+    private EquipmentEntity EquipmentEntity;
 
+    // for userId and userName
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
     private UserEntity UserEntity;
 
-    @Column(name = "equipment_inspection_date")
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "equipment_inspection_date", nullable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date equipmentInspectionDate;
 
-    @Column(name = "equipment_inspection_result")
+    @Column(name = "equipment_inspection_result", nullable = false)
     private String equipmentInspectionResult;
 
-    @Column(name = "equipment_inspection_records")
+    // 점검 개요
+    @Column(name = "equipment_inspection_records", nullable = false)
     private String equipmentInspectionRecords;
 
     @Column(name = "equipment_inspection_notes")

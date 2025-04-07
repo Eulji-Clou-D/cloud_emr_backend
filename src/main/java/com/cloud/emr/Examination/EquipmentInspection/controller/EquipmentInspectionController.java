@@ -1,9 +1,10 @@
-package com.cloud.emr.Examination.EquipmentJournal.controller;
+package com.cloud.emr.Examination.EquipmentInspection.controller;
 
-import com.cloud.emr.Examination.EquipmentJournal.dto.EquipmentJournalRegisterRequest;
-import com.cloud.emr.Examination.EquipmentJournal.dto.EquipmentJournalResponse;
-import com.cloud.emr.Examination.EquipmentJournal.dto.EquipmentJournalUpdateRequest;
-import com.cloud.emr.Examination.EquipmentJournal.service.EquipmentJournalService;
+import com.cloud.emr.Examination.Equipment.entity.EquipmentEntity;
+import com.cloud.emr.Examination.EquipmentInspection.dto.EquipmentInspectionRegisterRequest;
+import com.cloud.emr.Examination.EquipmentInspection.dto.EquipmentInspectionResponse;
+import com.cloud.emr.Examination.EquipmentInspection.dto.EquipmentInspectionUpdateRequest;
+import com.cloud.emr.Examination.EquipmentInspection.service.EquipmentInspectionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,19 +13,19 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/equipment")
-public class EquipmentJournalController {
+@RequestMapping("/api/equipmentinspection")
+public class EquipmentInspectionController {
 
-    private final EquipmentJournalService equipmentJournalService;
+    private final EquipmentInspectionService equipmentInspectionService;
 
-    public EquipmentJournalController(EquipmentJournalService equipmentJournalService) {
-        this.equipmentJournalService = equipmentJournalService;
+    public EquipmentInspectionController(EquipmentInspectionService equipmentInspectionService) {
+        this.equipmentInspectionService = equipmentInspectionService;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Map<String, Object>> registerEquipment(@RequestBody EquipmentJournalRegisterRequest equipmentJournalRegisterRequest) {
+    public ResponseEntity<Map<String, Object>> registerEquipment(@RequestBody EquipmentInspectionRegisterRequest equipmentInspectionRegisterRequest) {
         try {
-            EquipmentEntity responseData = equipmentJournalService.registerEquipment(equipmentJournalRegisterRequest);
+            EquipmentEntity responseData = equipmentInspectionService.registerEquipment(equipmentInspectionRegisterRequest);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
                     "message", "등록 성공",
@@ -44,14 +45,14 @@ public class EquipmentJournalController {
     @GetMapping("/read/{equipmentId}")
     public ResponseEntity<Map<String, Object>> viewEquipment(@PathVariable Long equipmentId) {
         try {
-            EquipmentJournalResponse equipmentJournalResponse = equipmentJournalService.readEquipment(equipmentId);
-            if (equipmentJournalResponse == null) {
+            EquipmentInspectionResponse equipmentInspectionResponse = equipmentInspectionService.readEquipment(equipmentId);
+            if (equipmentInspectionResponse == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "검사 정보를 찾을 수 없습니다."));
             }
 
             return ResponseEntity.status(HttpStatus.OK).body(Map.of(
                     "message", "조회 성공",
-                    "data", equipmentJournalResponse
+                    "data", equipmentInspectionResponse
             ));
 
         } catch (Exception e) {
@@ -66,10 +67,10 @@ public class EquipmentJournalController {
     @GetMapping("/read/{equipmentName}")
     public ResponseEntity<Map<String, Object>> getEquipmentByEquipmentName(@PathVariable String equipmentName) {
         try {
-            List<EquipmentJournalResponse> equipmentJournalRespons = equipmentJournalService.readEquipmentByEquipmentName(equipmentName);
+            List<EquipmentInspectionResponse> equipmentInspectionRespons = equipmentInspectionService.readEquipmentByEquipmentName(equipmentName);
             return ResponseEntity.status(HttpStatus.OK).body(Map.of(
                     "message", "부분 조회 성공",
-                    "data", equipmentJournalRespons
+                    "data", equipmentInspectionRespons
             ));
         } catch (Exception e) {
 
@@ -84,10 +85,10 @@ public class EquipmentJournalController {
     @GetMapping("/read/all")
     public ResponseEntity<Map<String, Object>> getAllEquipmentInfo() {
         try {
-            List<EquipmentJournalResponse> equipmentJournalRespons = equipmentJournalService.readAllEquipment();
+            List<EquipmentInspectionResponse> equipmentInspectionRespons = equipmentInspectionService.readAllEquipment();
             return ResponseEntity.status(HttpStatus.OK).body(Map.of(
                     "message", "전체 조회 성공",
-                    "data", equipmentJournalRespons
+                    "data", equipmentInspectionRespons
             ));
         } catch (Exception e) {
 
@@ -102,10 +103,10 @@ public class EquipmentJournalController {
     @PostMapping("/update/{equipmentId}")
     public ResponseEntity<Map<String, Object>> updateEquipment(
             @PathVariable Long equipmentId,
-            @RequestBody EquipmentJournalUpdateRequest equipmentJournalUpdateRequest) {
+            @RequestBody EquipmentInspectionUpdateRequest equipmentInspectionUpdateRequest) {
 
         try {
-            EquipmentEntity updatedData = equipmentJournalService.updateEquipment(equipmentId, equipmentJournalUpdateRequest);
+            EquipmentEntity updatedData = equipmentInspectionService.updateEquipment(equipmentId, equipmentInspectionUpdateRequest);
 
             return ResponseEntity.status(HttpStatus.OK).body(Map.of(
                     "message", "수정 성공",
@@ -125,7 +126,7 @@ public class EquipmentJournalController {
     public ResponseEntity<Map<String, Object>> deleteEquipment(@PathVariable Long equipmentId) {
         try {
 
-            EquipmentJournalResponse deletedEquipment = equipmentJournalService.deleteEquipment(equipmentId);
+            EquipmentInspectionResponse deletedEquipment = equipmentInspectionService.deleteEquipment(equipmentId);
 
             return ResponseEntity.status(HttpStatus.OK).body(Map.of(
                     "message", "삭제 성공",
