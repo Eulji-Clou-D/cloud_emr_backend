@@ -56,4 +56,9 @@ public class UserEntity {
     public UserEntity(Long userId) {
     }
 
+
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
+    }
+
 }

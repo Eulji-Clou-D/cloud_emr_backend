@@ -1,10 +1,10 @@
-package com.cloud.emr.Main.User.dto;
+package com.cloud.emr.Main.Auth.Dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 
 @Getter
-public class UserLoginRequest {
+public class LoginRequest {
 
     @NotBlank(message = "아이디를 입력해주세요.")
     String userLoginId;

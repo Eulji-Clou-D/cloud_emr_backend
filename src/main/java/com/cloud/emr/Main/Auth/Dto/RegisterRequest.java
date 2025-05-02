@@ -1,4 +1,4 @@
-package com.cloud.emr.Main.User.dto;
+package com.cloud.emr.Main.Auth.Dto;
 
 import com.cloud.emr.Main.User.entity.UserEntity;
 import com.cloud.emr.Main.User.status.RoleType;
@@ -9,7 +9,7 @@ import lombok.Getter;
 import java.time.LocalDate;
 
 @Getter
-public class UserRegisterRequest {
+public class RegisterRequest {
 
     /*
     @Enumerated(EnumType.STRING)
@@ -33,10 +33,7 @@ public class UserRegisterRequest {
     @Size(min = 8, max = 16, message = "비밀번호는 8자 이상 16자 이하이어야 합니다.")
     @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*[0-9!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]).{8,16}$", message = "비밀번호는 영문 대소문자, 숫자 또는 특수문자 중 2가지 이상 조합, 8자 이상 16자 이하로 설정해야 합니다.")
     @NotEmpty(message = "비밀번호는 필수항목입니다.")
-    private String userPassword1;
-
-    @NotEmpty(message = "비밀번호 확인은 필수항목입니다.")
-    private String userPassword2;
+    private String userPassword;
 
     @NotEmpty(message = "주소는 필수항목입니다.")
     private String userAddress;
@@ -64,17 +61,13 @@ public class UserRegisterRequest {
      * @return : UserEntity
      */
     public UserEntity toUserEntity() {
-        // 프론트 단에서 일단 검증 했더라도
-        if (!userPassword1.equals(userPassword2)) {
-            throw new IllegalArgumentException("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
-        }
 
         return UserEntity.builder()
                 // .hospitalCode(this.userHospitalCode)
                 .userDeptName(this.userDepartmentName)
                 .Role(RoleType.WAIT) //우선 WAIT로 진행
                 .userLoginId(this.userLoginId)
-                .userPassword(this.userPassword1) // 비밀번호는 userPassword1을 사용
+                .userPassword(this.userPassword)
                 .userName(this.userName)
                 .userGender(this.userGender)
                 .userAddress(this.userAddress)
