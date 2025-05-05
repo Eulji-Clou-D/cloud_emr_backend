@@ -1,6 +1,9 @@
 package com.cloud.emr.Main.Auth.Jwt;
 
-public class CustomAuthenticationException extends RuntimeException {
-    public CustomAuthenticationException(String s) {
+import org.springframework.security.core.AuthenticationException;
+
+public class CustomAuthenticationException extends AuthenticationException {
+    public CustomAuthenticationException(String message) {
+        super(message);
     }
 }
