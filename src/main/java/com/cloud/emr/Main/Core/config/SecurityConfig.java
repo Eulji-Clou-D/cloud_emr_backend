@@ -1,6 +1,6 @@
 package com.cloud.emr.Main.Core.config;
-import com.cloud.emr.Main.Auth.Jwt.JwtAccessDeniedHandler;
-import com.cloud.emr.Main.Auth.Jwt.JwtAuthenticationFilter;
+import com.cloud.emr.Main.Core.Jwt.JwtAccessDeniedHandler;
+import com.cloud.emr.Main.Core.Jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.context.annotation.Bean;

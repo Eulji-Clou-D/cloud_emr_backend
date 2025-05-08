@@ -27,10 +27,9 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<Object> register(@Valid @RequestBody RegisterRequest request) {
         try {
-            String UserLoginId = authService.register(request);
+            authService.register(request);
             return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
-                    "message", "회원가입 성공",
-                    "user_id", UserLoginId
+                    "message", "회원가입 성공"
             ));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(

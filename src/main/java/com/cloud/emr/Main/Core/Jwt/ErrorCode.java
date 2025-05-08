@@ -1,4 +1,4 @@
-package com.cloud.emr.Main.Auth.Jwt;
+package com.cloud.emr.Main.Core.Jwt;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

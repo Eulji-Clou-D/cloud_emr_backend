@@ -1,6 +1,7 @@
 package com.cloud.emr.Main.User.entity;
 
-import com.cloud.emr.Main.User.status.RoleType;
+import com.cloud.emr.Main.User.type.Gender;
+import com.cloud.emr.Main.User.type.RoleType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,17 +20,16 @@ public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private Long userId;
+    @Column(name = "id")
+    private Long id;
 
     @Column(length = 10)
     @Enumerated(EnumType.STRING)
-    private RoleType Role;
+    private RoleType role;
 
-    //음..? 일단 만들어 다듬어만 드릴게요  - 최경태
-    @Column(name = "user_login_id")
-    private String userLoginId;
-    private String userPassword;
+    @Column(name = "login_id")
+    private String loginId;
+    private String password;
 
 
 
@@ -39,26 +39,26 @@ public class UserEntity {
     private HospitalCode hospitalCode;
     */
 
-    private String userDeptName;
+    private String deptName;
 
 
-    private String userName;
-    private String userGender;
-    private String userAddress;
-    private String userEmail;
-    private String userTel;
-    private LocalDateTime userBirth;
-    private LocalDateTime userHireDate;
+    private String name;
+    private Gender gender;
+    private String address;
+    private String email;
+    private String telNum;
+    private LocalDateTime birth;
+    private LocalDateTime hireDate;
 
     @CreationTimestamp
-    private LocalDateTime userRegisterDate;
+    private LocalDateTime registerDate;
 
     public UserEntity(Long userId) {
     }
 
 
-    public void setUserPassword(String userPassword) {
-        this.userPassword = userPassword;
+    public void setUserPassword(String Password) {
+        this.password = Password;
     }
 
 }

@@ -1,7 +1,7 @@
 package com.cloud.emr.Main.Auth.service;
 
 import com.cloud.emr.Main.Auth.Dto.TokenResponse;
-import com.cloud.emr.Main.Auth.Jwt.JwtUtil;
+import com.cloud.emr.Main.Core.Jwt.JwtUtil;
 import com.cloud.emr.Main.Auth.Dto.LoginRequest;
 import com.cloud.emr.Main.Auth.Dto.RegisterRequest;
 import com.cloud.emr.Main.User.entity.UserEntity;
@@ -10,8 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Date;
 
 @Service
 @Transactional
@@ -22,19 +20,19 @@ public class AuthService {
     private final JwtUtil jwtUtil;
 
 
-    public String register(RegisterRequest userRegisterRequest) {
+    public void register(RegisterRequest userRegisterRequest) {
 
         // 중복 검증: 이메일이나 사용자 계정이 이미 존재하는지 확인
-        if (userRepository.existsByUserLoginId(userRegisterRequest.getUserLoginId())) {
+        if (userRepository.existsByLoginId(userRegisterRequest.getUserLoginId())) {
             throw new IllegalArgumentException("이미 사용 중인 계정입니다.");
         }
 
         // DTO에서 Entity로 변환
         UserEntity userEntity = userRegisterRequest.toUserEntity();
-        userEntity.setUserPassword(passwordEncoder.encode(userEntity.getUserPassword()));
+        userEntity.setUserPassword(passwordEncoder.encode(userEntity.getPassword()));
 
         // 데이터베이스에 저장
-        return userRepository.save(userEntity).getUserLoginId();
+        userRepository.save(userEntity);
     }
 
 
@@ -45,16 +43,15 @@ public class AuthService {
      * @throws IllegalArgumentException : 로그인 실패 시
      */
     public TokenResponse login(LoginRequest request) {
-        UserEntity user = userRepository.findByUserLoginId(request.getUserLoginId())
+        UserEntity user = userRepository.findByLoginId(request.getUserLoginId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
 
-        if (!passwordEncoder.matches(request.getUserPassword(), user.getUserPassword())) {
+        if (!passwordEncoder.matches(request.getUserPassword(), user.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
-        Date now = new Date();
-        String accessToken = jwtUtil.generateAccessToken(user.getUserId().toString(), now);
-        String refreshToken = jwtUtil.generateRefreshToken(user.getUserId().toString(), now);
+        TokenResponse tokenResponse = jwtUtil.generateTokens(user.getId());
 
-        return TokenResponse.of(accessToken, refreshToken);
-    }}
+        return tokenResponse;
+    }
+}

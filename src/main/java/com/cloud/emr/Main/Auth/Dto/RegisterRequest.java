@@ -1,7 +1,8 @@
 package com.cloud.emr.Main.Auth.Dto;
 
 import com.cloud.emr.Main.User.entity.UserEntity;
-import com.cloud.emr.Main.User.status.RoleType;
+import com.cloud.emr.Main.User.type.Gender;
+import com.cloud.emr.Main.User.type.RoleType;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 
@@ -24,7 +25,7 @@ public class RegisterRequest {
     private String userName;
 
     @NotEmpty(message = "성별은 필수항목입니다.")
-    private String userGender;
+    private Gender userGender;
 
     @Size(max = 25, min = 3)
     @NotEmpty(message = "아이디는 필수항목입니다.")
@@ -64,17 +65,17 @@ public class RegisterRequest {
 
         return UserEntity.builder()
                 // .hospitalCode(this.userHospitalCode)
-                .userDeptName(this.userDepartmentName)
-                .Role(RoleType.WAIT) //우선 WAIT로 진행
-                .userLoginId(this.userLoginId)
-                .userPassword(this.userPassword)
-                .userName(this.userName)
-                .userGender(this.userGender)
-                .userAddress(this.userAddress)
-                .userEmail(this.userEmail)
-                .userTel(this.userTel)
-                .userBirth(this.userBirth.atStartOfDay()) // LocalDate로부터 LocalDateTime으로 변환
-                .userHireDate(this.userHireDate.atStartOfDay()) // LocalDate로부터 LocalDateTime으로 변환
+                .deptName(this.userDepartmentName)
+                .role(RoleType.WAIT) //우선 WAIT로 진행
+                .loginId(this.userLoginId)
+                .password(this.userPassword)
+                .name(this.userName)
+                .gender(this.userGender)
+                .address(this.userAddress)
+                .email(this.userEmail)
+                .telNum(this.userTel)
+                .birth(this.userBirth.atStartOfDay()) // LocalDate로부터 LocalDateTime으로 변환
+                .hireDate(this.userHireDate.atStartOfDay()) // LocalDate로부터 LocalDateTime으로 변환
                 .build();
     }
 

@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
-    Optional<UserEntity> findByUserLoginId(String userLoginId);
+    Optional<UserEntity> findByLoginId(String LoginId);
 
-    boolean existsByUserLoginId(String userLoginId);
+    boolean existsByLoginId(String LoginId);
 
 }

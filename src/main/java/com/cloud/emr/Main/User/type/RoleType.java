@@ -1,4 +1,4 @@
-package com.cloud.emr.Main.User.status;
+package com.cloud.emr.Main.User.type;
 
 public enum RoleType {
 

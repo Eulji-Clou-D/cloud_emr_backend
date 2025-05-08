@@ -1,4 +1,4 @@
-package com.cloud.emr.Main.Auth.Jwt;
+package com.cloud.emr.Main.Core.Jwt;
 
 import com.cloud.emr.Main.Auth.Dto.TokenResponse;
 import com.cloud.emr.Main.Auth.service.RefreshTokenService;
@@ -62,7 +62,7 @@ public class JwtUtil {
     public String generateAccessToken(String userId, Date date) {
         return Jwts.builder()
                 .setSubject(userId)
-                .claim("role", "USER") // 예시 클레임
+                .claim("role", "USER")
                 .setIssuedAt(date)
                 .setExpiration(new Date(date.getTime() + ACCESS_TOKEN_EXPIRE_TIME))
                 .signWith(key, SignatureAlgorithm.HS512)
@@ -113,7 +113,7 @@ public class JwtUtil {
         UserEntity user = userRepository.findById(Long.valueOf(claims.getSubject())).
                 orElseThrow();
         List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(user.getRole().toString()));
-        return new UsernamePasswordAuthenticationToken(user.getUserLoginId(), null, authorities);
+        return new UsernamePasswordAuthenticationToken(user.getLoginId(), null, authorities);
     }
 
     public String resolveToken(String token) {
