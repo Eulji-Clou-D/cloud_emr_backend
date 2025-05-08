@@ -19,39 +19,39 @@ public class RegisterRequest {
      */
 
     @NotEmpty(message = "부서명은 필수항목입니다.")
-    private String userDepartmentName;
+    private String departmentName;
 
     @NotEmpty(message = "이름은 필수항목입니다.")
-    private String userName;
+    private String name;
 
-    @NotEmpty(message = "성별은 필수항목입니다.")
-    private Gender userGender;
+    @NotNull(message = "성별은 필수항목입니다.")
+    private Gender gender;
 
     @Size(max = 25, min = 3)
     @NotEmpty(message = "아이디는 필수항목입니다.")
-    private String userLoginId;
+    private String loginId;
 
     @Size(min = 8, max = 16, message = "비밀번호는 8자 이상 16자 이하이어야 합니다.")
     @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*[0-9!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]).{8,16}$", message = "비밀번호는 영문 대소문자, 숫자 또는 특수문자 중 2가지 이상 조합, 8자 이상 16자 이하로 설정해야 합니다.")
     @NotEmpty(message = "비밀번호는 필수항목입니다.")
-    private String userPassword;
+    private String password;
 
     @NotEmpty(message = "주소는 필수항목입니다.")
-    private String userAddress;
+    private String address;
 
     @NotEmpty(message = "이메일은 필수항목입니다.")
     @Email(message = "유효한 이메일을 입력해주세요.")
-    private String userEmail;
+    private String email;
 
     @NotEmpty(message = "휴대폰 번호는 필수항목입니다.")
     @Pattern(regexp = "^01[0-9]-[0-9]{4}-[0-9]{4}$", message = "핸드폰 번호의 양식을 확인해주세요. 예: 010-1234-5678")
-    private String userTel;
+    private String telNum;
 
     @NotNull(message = "생년월일은 필수항목입니다.")
-    private LocalDate userBirth;
+    private LocalDate birth;
 
     @NotNull(message = "입사일은 필수항목입니다.")
-    private LocalDate userHireDate;
+    private LocalDate hireDate;
 
     // userRegisterDate는 엔티티에서 자동으로 생성
 
@@ -65,17 +65,17 @@ public class RegisterRequest {
 
         return UserEntity.builder()
                 // .hospitalCode(this.userHospitalCode)
-                .deptName(this.userDepartmentName)
+                .deptName(this.departmentName)
                 .role(RoleType.WAIT) //우선 WAIT로 진행
-                .loginId(this.userLoginId)
-                .password(this.userPassword)
-                .name(this.userName)
-                .gender(this.userGender)
-                .address(this.userAddress)
-                .email(this.userEmail)
-                .telNum(this.userTel)
-                .birth(this.userBirth.atStartOfDay()) // LocalDate로부터 LocalDateTime으로 변환
-                .hireDate(this.userHireDate.atStartOfDay()) // LocalDate로부터 LocalDateTime으로 변환
+                .loginId(this.loginId)
+                .password(this.password)
+                .name(this.name)
+                .gender(this.gender)
+                .address(this.address)
+                .email(this.email)
+                .telNum(this.telNum)
+                .birth(this.birth.atStartOfDay()) // LocalDate로부터 LocalDateTime으로 변환
+                .hireDate(this.hireDate.atStartOfDay()) // LocalDate로부터 LocalDateTime으로 변환
                 .build();
     }
 

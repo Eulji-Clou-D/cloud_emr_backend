@@ -23,7 +23,7 @@ public class AuthService {
     public void register(RegisterRequest userRegisterRequest) {
 
         // 중복 검증: 이메일이나 사용자 계정이 이미 존재하는지 확인
-        if (userRepository.existsByLoginId(userRegisterRequest.getUserLoginId())) {
+        if (userRepository.existsByLoginId(userRegisterRequest.getLoginId())) {
             throw new IllegalArgumentException("이미 사용 중인 계정입니다.");
         }
 
@@ -43,10 +43,10 @@ public class AuthService {
      * @throws IllegalArgumentException : 로그인 실패 시
      */
     public TokenResponse login(LoginRequest request) {
-        UserEntity user = userRepository.findByLoginId(request.getUserLoginId())
+        UserEntity user = userRepository.findByLoginId(request.getLoginId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
 
-        if (!passwordEncoder.matches(request.getUserPassword(), user.getPassword())) {
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
