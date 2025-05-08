@@ -26,7 +26,7 @@ public class DoctorRecessEntity {
 
     // 사용자 id
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private UserEntity userEntity;
 
     // 휴진 시작 날짜 시간 (30분 단위)

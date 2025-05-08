@@ -36,7 +36,7 @@ public class CheckInEntity {
     // 다대일 (한 유저는 여러 접수가 가능)
     // 사용자 IDa
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private UserEntity userEntity;
 
     // 접수 일자 시간 (접수된 시간)

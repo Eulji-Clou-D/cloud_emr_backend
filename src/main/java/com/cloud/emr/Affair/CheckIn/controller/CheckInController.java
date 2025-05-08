@@ -57,7 +57,7 @@ public class CheckInController {
             Map<String, Object> responseData = Map.of(
                     "checkInId", newCheckIn.getCheckInId(),
                     "patientNo", newCheckIn.getPatientEntity().getPatientNo(),
-                    "userId", userEntity.getUserId(), // userEntity에서 userId만 추출
+                    "userId", userEntity.getId(), // userEntity에서 userId만 추출
                     "checkInDate", newCheckIn.getCheckInDate(),
                     "checkInPurpose", newCheckIn.getCheckInPurpose()
             );

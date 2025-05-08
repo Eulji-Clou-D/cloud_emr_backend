@@ -46,7 +46,7 @@ public class BloodBankEntity {
     private TreatmentEntity treatmentEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private UserEntity UserEntity;
 
     @Column(name = "examination_Time")

@@ -38,7 +38,7 @@ public class CheckInService {
                     checkInEntity.getCheckInId(),    // 접수 ID
                     checkInEntity.getPatientEntity().getPatientNo(),    // 환자 번호
                     checkInEntity.getCheckInPurpose(), // 접수 목적
-                    checkInEntity.getUserEntity().getUserName() // 접수한 유저 이름
+                    checkInEntity.getUserEntity().getName() // 접수한 유저 이름
             );
             return response;
         }).collect(Collectors.toList());
