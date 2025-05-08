@@ -1,4 +1,4 @@
-package com.cloud.emr.Main.Config;
+package com.cloud.emr.Main.Core.config;
 import com.cloud.emr.Main.Auth.Jwt.JwtAccessDeniedHandler;
 import com.cloud.emr.Main.Auth.Jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +22,7 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
