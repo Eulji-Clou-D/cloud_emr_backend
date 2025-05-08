@@ -92,11 +92,11 @@ public class EquipmentService {
                 .orElseThrow(() -> new RuntimeException("기존 해당 장비 정보가 없습니다."));
 
         if(!equipmentUpdateRequest.getEquipmentName().isBlank()
-            || !equipmentUpdateRequest.getEquipmentProductNumber().isBlank()
-            || !equipmentUpdateRequest.getEquipmentManufacturer().isBlank()){
+                || !equipmentUpdateRequest.getEquipmentProductNumber().isBlank()
+                || !equipmentUpdateRequest.getEquipmentManufacturer().isBlank()){
             if(!equipmentUpdateRequest.getEquipmentName().isBlank()
-                && !equipmentUpdateRequest.getEquipmentProductNumber().isBlank()
-                && !equipmentUpdateRequest.getEquipmentManufacturer().isBlank()){
+                    && !equipmentUpdateRequest.getEquipmentProductNumber().isBlank()
+                    && !equipmentUpdateRequest.getEquipmentManufacturer().isBlank()){
                 throw new RuntimeException("장비의 이름, 제품번호, 제조사를 모두 채우세요.");
             }
         }

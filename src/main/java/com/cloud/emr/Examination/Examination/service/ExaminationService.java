@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class ExaminationService {
-    
+
     private final ExaminationRepository examinationRepository;
 
     private final EquipmentRepository equipmentRepository;
@@ -146,7 +146,7 @@ public class ExaminationService {
     public ExaminationResponse deleteExamination(Long examinationID) {
 
         ExaminationEntity examinationEntity = examinationRepository.findByExaminationId(examinationID)
-                          .orElseThrow(() -> new RuntimeException("해당 검사 정보가 없습니다."));
+                .orElseThrow(() -> new RuntimeException("해당 검사 정보가 없습니다."));
 
         ExaminationResponse deletedExamination = new ExaminationResponse(
                 examinationEntity.getExaminationId(),

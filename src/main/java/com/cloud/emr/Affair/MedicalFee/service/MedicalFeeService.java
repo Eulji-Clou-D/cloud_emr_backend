@@ -5,7 +5,6 @@ import com.cloud.emr.Affair.MedicalFee.dto.MedicalFeeResponse;
 import com.cloud.emr.Affair.MedicalFee.entity.MedicalFeeEntity;
 import com.cloud.emr.Affair.MedicalFee.entity.MedicalTypeEntity;
 import com.cloud.emr.Affair.MedicalFee.repository.MedicalFeeRepository;
-import com.cloud.emr.Treatment.Treatment.dto.TreatmentResponse;
 import com.cloud.emr.Treatment.Treatment.entity.TreatmentEntity;
 import com.cloud.emr.Treatment.Treatment.repository.TreatmentRepository;
 import jakarta.transaction.Transactional;
@@ -38,7 +37,7 @@ public class MedicalFeeService {
                 medicalFeeEntity.getTreatmentEntity().getTreatmentId()
         );
     }
-
+/*
     // medicalfee 생성시 자동으로 총 금액이 업데이트 되도록
     // 추후 MedicalType Update시 수정된 총 금액이 반영되도록 업데이트가 필요함
     @Transactional
@@ -53,7 +52,7 @@ public class MedicalFeeService {
         Long totalFee = medicalFees.stream()
                 .mapToLong(medicalFee -> medicalFee.getMedicalTypeEntity().getMedicalTypeFee())
                 .sum();
-/*
+
         // 기존 객체의 필드를 유지하면서 새로운 값만 변경
         TreatmentEntity updatedTreatment = TreatmentEntity.builder()
                 .treatmentId(treatment.getTreatmentId())
@@ -81,12 +80,12 @@ public class MedicalFeeService {
                 updatedTreatment.getTreatmentTotalFee()
         );
 
- */
+
         return null;
 
 
 
     }
 
-
+ */
 }

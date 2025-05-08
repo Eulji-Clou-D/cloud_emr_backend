@@ -4,7 +4,6 @@ package com.cloud.emr.Treatment.Treatment.controller;
 import com.cloud.emr.Affair.CheckIn.entity.CheckInEntity;
 import com.cloud.emr.Affair.CheckIn.service.CheckInService;
 import com.cloud.emr.Affair.MedicalFee.service.MedicalFeeService;
-import com.cloud.emr.Treatment.Treatment.dto.TreatmentResponse;
 import com.cloud.emr.Treatment.Treatment.dto.TreatmentRequest;
 import com.cloud.emr.Treatment.Treatment.entity.TreatmentEntity;
 import com.cloud.emr.Treatment.Treatment.service.TreatmentService;
