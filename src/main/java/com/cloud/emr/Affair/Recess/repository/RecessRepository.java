@@ -1,7 +1,7 @@
 package com.cloud.emr.Affair.Recess.repository;
 
 import com.cloud.emr.Affair.Recess.entity.RecessEntity;
-import com.cloud.emr.Main.User.status.RoleType;
+import com.cloud.emr.Main.User.type.RoleType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

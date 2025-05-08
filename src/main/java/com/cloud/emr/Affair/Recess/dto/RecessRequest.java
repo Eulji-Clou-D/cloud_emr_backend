@@ -1,6 +1,6 @@
 package com.cloud.emr.Affair.Recess.dto;
 
-import com.cloud.emr.Main.User.status.RoleType;
+import com.cloud.emr.Main.User.type.RoleType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

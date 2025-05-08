@@ -3,7 +3,7 @@ package com.cloud.emr.Affair.Recess.controller;
 import com.cloud.emr.Affair.Recess.dto.RecessRequest;
 import com.cloud.emr.Affair.Recess.dto.RecessResponse;
 import com.cloud.emr.Affair.Recess.service.RecessService;
-import com.cloud.emr.Main.User.status.RoleType;
+import com.cloud.emr.Main.User.type.RoleType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

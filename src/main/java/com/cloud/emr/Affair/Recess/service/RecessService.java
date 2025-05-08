@@ -6,7 +6,7 @@ import com.cloud.emr.Affair.Recess.entity.RecessEntity;
 import com.cloud.emr.Affair.Recess.repository.RecessRepository;
 import com.cloud.emr.Main.User.entity.UserEntity;
 import com.cloud.emr.Main.User.repository.UserRepository;
-import com.cloud.emr.Main.User.status.RoleType;
+import com.cloud.emr.Main.User.type.RoleType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -111,8 +111,8 @@ public class RecessService {
     private RecessResponse toDto(RecessEntity e, UserEntity u) {
         return new RecessResponse(
                 e.getId(),
-                u.getUserId(),
-                u.getUserName(),
+                u.getId(),
+                u.getName(),
                 u.getRole().name(),
                 e.getRecessStart(),
                 e.getRecessEnd(),
