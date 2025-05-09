@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface AuthRole {
-    RoleType[] roles() default { RoleType.WAIT }; // 여러 역할을 허용하도록 변경
+    RoleType[] roles() default { };
 
 }
 
