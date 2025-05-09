@@ -5,6 +5,7 @@ import com.cloud.emr.Main.Core.Jwt.JwtUtil;
 import com.cloud.emr.Main.Core.common.annotation.AuthUser;
 import com.cloud.emr.Main.User.entity.UserEntity;
 import com.cloud.emr.Main.User.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
@@ -42,8 +43,6 @@ public class AuthUserResolver implements HandlerMethodArgumentResolver {
                 }
         );
 
-        //인터셉터에서도 접근 가능하도록 request에 저장
-        webRequest.setAttribute("authUser", user, NativeWebRequest.SCOPE_REQUEST);
 
         return user;
     }

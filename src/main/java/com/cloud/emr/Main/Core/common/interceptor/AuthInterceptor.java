@@ -6,6 +6,8 @@ import com.cloud.emr.Main.User.type.RoleType;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -33,32 +35,30 @@ public class AuthInterceptor implements HandlerInterceptor {
         AuthRole authCheck = method.getMethodAnnotation(AuthRole.class);
 
         if (authCheck != null) {
-            UserEntity authUser = (UserEntity) request.getAttribute("authUser");
-
-            if (authUser == null) {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication == null || !authentication.isAuthenticated()) {
+                log.warn("인증 정보가 없습니다. 로그인 필요.");
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "로그인이 필요합니다.");
                 return false;
             }
-            //유저가 단일 권한으로 제한 했지만 추후 복합권한고려
-            RoleType userRole = authUser.getRole();
-            boolean hasAccess = false;
-            RoleType[] allowedRoles = authCheck.roles();
-            //어노테이션에 아무것도 안붙어있다면 WAIT유저 제외하고 통과
-            if (allowedRoles.length == 0) {
-                allowedRoles = Arrays.stream(RoleType.values())
+
+            final RoleType[] allowedRoles;
+            RoleType[] tempRoles = authCheck.roles();
+            if (tempRoles.length == 0) {
+                tempRoles = Arrays.stream(RoleType.values())
                         .filter(role -> role != RoleType.WAIT)
                         .toArray(RoleType[]::new);
             }
-            for (RoleType allowed : allowedRoles) {
-            //for (RoleType allowed : authCheck.roles()) {
-                if (allowed == userRole) {
-                    hasAccess = true;
-                    break;
-                }
-            }
+            allowedRoles = tempRoles;
+
+            boolean hasAccess = authentication.getAuthorities().stream()
+                    .map(authority -> authority.getAuthority())
+                    .map(auth -> auth.replace("ROLE_", ""))
+                    .map(RoleType::valueOf)
+                    .anyMatch(role -> Arrays.asList(allowedRoles).contains(role));
 
             if (!hasAccess) {
-                log.warn("접근 거부: {} (요청 URI: {})", userRole, request.getRequestURI());
+                log.warn("접근 거부: {} (요청 URI: {})", authentication.getAuthorities(), request.getRequestURI());
                 response.sendError(HttpServletResponse.SC_FORBIDDEN, "권한이 없습니다.");
                 return false;
             }
