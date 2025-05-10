@@ -61,4 +61,6 @@ public class UserEntity {
         this.password = Password;
     }
 
+    public void setRole(RoleType role) {this.role = role;}
+
 }

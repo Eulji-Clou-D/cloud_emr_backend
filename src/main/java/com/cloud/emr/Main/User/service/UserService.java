@@ -25,4 +25,11 @@ public class UserService {
                 .map(WaitUserResponse :: from)
                 .toList(); // Role이 WAIT인 유저만 조회
     }
+
+    public void changeUserRole(Long userId, RoleType roleType) {
+        UserEntity user =  userRepository.findById(userId).orElseThrow(() -> new RuntimeException("유저가 존재하지 않습니다."));
+
+        user.setRole(roleType);
+        userRepository.save(user);
+    }
 }
