@@ -28,11 +28,16 @@ public class DoctorTreatmentService {
         Optional<UserEntity> reqUser = userRepository.findById(reqUserId);
         List<DoctorTreatmentEntity> checks = doctorTreatmentRepository.findAllByUserEntity(reqUser);
 
+        if (checks.isEmpty()) {
+            return false;
+        }
+
         for(DoctorTreatmentEntity check : checks){
             LocalDateTime existStart = check.getDoctorTreatmentStart();
+
             LocalDateTime existEnd = check.getDoctorTreatmentEnd();
 
-            if (reqStartTime.isBefore(existStart) && reqEndTime.isAfter(existEnd)) {
+            if (!((reqEndTime.isBefore(existStart) || reqStartTime.isAfter(existEnd)) && reqStartTime.isBefore(reqEndTime))) {
                 return true; //겹침
             }
         }

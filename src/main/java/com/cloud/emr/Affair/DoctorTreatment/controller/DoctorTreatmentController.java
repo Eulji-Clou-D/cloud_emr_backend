@@ -34,6 +34,8 @@ public class DoctorTreatmentController {
 * 3. 일정 삭제
 * 4. user별 일정 조회
 * 5. 날짜별 일정 조회
+*
+* 나중에 User 어노테이션으로 튜닝 필요
 * */
 
     //일정 생성
@@ -95,4 +97,19 @@ public class DoctorTreatmentController {
         }
     }
 
+    //일정 수정
+    // 환자 간의 일정이 여러개라도, 화면에 뿌려질테고, 해당 스케쥴 번호를 통해 수정할 수 있음
+//    @PostMapping("/update")
+//    public ResponseEntity<Object> updateDoctorTreatment(@RequestParam Long userId, @RequestBody DoctorTreatmentRequest doctorTreatmentRequest) {
+//        try{
+//
+//
+//
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
+//                    "message", "진료 일정 수정 실패",
+//                    "data", e.getMessage()
+//            ));
+//        }
+//    }
 }
