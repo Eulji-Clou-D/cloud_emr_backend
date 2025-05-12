@@ -31,7 +31,7 @@ public class WaitUserResponse {
             userEntity.getLoginId(),
             userEntity.getName(),
             userEntity.getEmail(),
-            userEntity.getDeptName(),
+            userEntity.getDepartment().getName(),
             userEntity.getGender().toString(),
             userEntity.getTelNum()
         );
