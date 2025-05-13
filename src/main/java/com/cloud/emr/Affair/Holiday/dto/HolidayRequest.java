@@ -1,0 +1,18 @@
+package com.cloud.emr.Affair.Holiday.dto;
+
+import com.cloud.emr.Main.User.type.RoleType;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+public class HolidayRequest {
+
+    private LocalDateTime holidayDate;
+    private String holidayReason;
+
+}
