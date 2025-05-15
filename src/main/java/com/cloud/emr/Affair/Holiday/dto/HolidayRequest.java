@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 public class HolidayRequest {
 
     private LocalDateTime holidayDate;
+    private Boolean holidayNational;
     private String holidayReason;
 
 }

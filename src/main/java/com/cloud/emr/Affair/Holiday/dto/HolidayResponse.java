@@ -13,6 +13,7 @@ public class HolidayResponse {
 
     private Long id;
     private LocalDateTime holidayDate;
+    private Boolean holidayNational;
     private String holidayReason;
 
 }

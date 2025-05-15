@@ -26,6 +26,7 @@ public class HolidayService {
     public HolidayResponse registerHoliday(HolidayRequest req) {
         HolidayEntity e = HolidayEntity.builder()
                 .holidayDate(req.getHolidayDate())
+                .holidayNational(req.getHolidayNational())
                 .holidayReason(req.getHolidayReason())
                 .build();
 
@@ -43,6 +44,7 @@ public class HolidayService {
         HolidayEntity updated = HolidayEntity.builder()
                 .id(e.getId())
                 .holidayDate(req.getHolidayDate() != null ? req.getHolidayDate() : e.getHolidayDate())
+                .holidayNational(req.getHolidayNational() != null ? req.getHolidayNational() : e.getHolidayNational())
                 .holidayReason(req.getHolidayReason() != null ? req.getHolidayReason() : e.getHolidayReason())
                 .build();
 
@@ -74,6 +76,7 @@ public class HolidayService {
         return new HolidayResponse(
                 e.getId(),
                 e.getHolidayDate(),
+                e.getHolidayNational(),
                 e.getHolidayReason()
         );
     }
