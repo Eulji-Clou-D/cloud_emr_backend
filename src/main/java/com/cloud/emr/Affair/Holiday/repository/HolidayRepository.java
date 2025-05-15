@@ -9,3 +9,4 @@ import java.util.List;
 public interface HolidayRepository extends JpaRepository<HolidayEntity, Long> {
 
 }
+

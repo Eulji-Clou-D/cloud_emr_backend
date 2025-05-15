@@ -17,3 +17,4 @@ public class HolidayResponse {
     private String holidayReason;
 
 }
+
