@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity(name = "HolidayEntity")
@@ -27,7 +28,7 @@ public class HolidayEntity {
     // 휴일 날짜
     @Column(name = "holiday_date")
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDateTime holidayDate;
+    private LocalDate holidayDate;
 
     // 국가 공휴일 여부, True = 국가 공휴일, False = 병원 자체 휴일
     @Column(name = "holiday_reason", nullable = false)

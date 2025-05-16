@@ -50,24 +50,20 @@ public class HolidayController {
         ));
     }
 
-    // 4. 휴일 목록 조회
-    // 일 별
-    // 주 별
-    // 월 별
-    // 분기 별
-    // 년 별
-//    @GetMapping
-//    public ResponseEntity<Map<String, Object>> list(@RequestParam RoleType role) {
-//        List<HolidayResponse> list = service.listByRole(role);
-//        if (list.isEmpty()) {
-//            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(Map.of(
-//                    "message", "조회된 휴일이 없습니다."
-//            ));
-//        }
-//        return ResponseEntity.ok(Map.of(
-//                "message", "휴일 목록 조회 성공",
-//                "data", list
-//        ));
-//    }
+    // 4. 휴일 목록 조회, 일 주 월 분기 년인지 여부를 period 받아서 동작
+    // 하지만 현재는 일과 년만 받아서 동작하게 함
+    @GetMapping("/{period}/{number}")
+    public ResponseEntity<Map<String, Object>> list(@PathVariable String period, @PathVariable String number) {
+        List<HolidayResponse> list = service.listByPeriod(period, number);
+        if (list.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(Map.of(
+                    "message", "조회된 휴일이 없습니다."
+            ));
+        }
+        return ResponseEntity.ok(Map.of(
+                "message", "휴일 목록 조회 성공",
+                "data", list
+        ));
+    }
 
 }

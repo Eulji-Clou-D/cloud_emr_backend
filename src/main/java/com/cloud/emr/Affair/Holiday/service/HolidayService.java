@@ -11,8 +11,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -60,18 +64,40 @@ public class HolidayService {
         holidayRepository.delete(e);
     }
 
-    /** 4. 휴일 목록 조회 **/
-    // 일 별
-    // 주 별
-    // 월 별
-    // 분기 별
-    // 년 별
-//    @Transactional(readOnly = true)
-//    public List<HolidayResponse> listByRole(RoleType role) {
-//        return
-//    }
+    /** 4. 휴일 목록 조회, 일 주 월 분기 년 구분 **/
+    @Transactional(readOnly = true)
+    public List<HolidayResponse> listByPeriod(String period, String number) {
+        if(!validatePeriod(period, number)) return Collections.emptyList();
+
+        List<HolidayEntity> holidayDateList = getHolidayDateByNumber(period, number);
+        if (holidayDateList.isEmpty()) return Collections.emptyList();
+        return holidayDateList.stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
+    }
 
     // ─────────────────────────────────────────────────────────
+    private Boolean validatePeriod(String period, String number) {
+        return ("day".equals(period) && number.length() == 8) || ("year".equals(period) && number.length() == 4);
+    }
+
+    private List<HolidayEntity> getHolidayDateByNumber(String period, String number) {
+        if("day".equals(period)) {
+            int year = Integer.parseInt(number.substring(0, 4));
+            int month = Integer.parseInt(number.substring(4, 6));
+            int day = Integer.parseInt(number.substring(6, 8));
+
+            return List.of(holidayRepository.findByHolidayDate(LocalDate.of(year, month, day)));
+        }
+        else if("year".equals(period)){
+            int year = Integer.parseInt(number);
+            LocalDateTime start = LocalDateTime.of(year, 1, 1, 0, 0);
+            LocalDateTime end = LocalDateTime.of(year, 12, 31, 23, 59, 59, 999_999_999);
+            return holidayRepository.findAllByHolidayDateBetween(start, end);
+        }
+        return Collections.emptyList();
+    }
+
     private HolidayResponse toDto(HolidayEntity e) {
         return new HolidayResponse(
                 e.getId(),
