@@ -1,6 +1,7 @@
 package com.cloud.emr.Main.User.entity;
 
 import com.cloud.emr.Main.Department.entity.DepartmentEntity;
+
 import com.cloud.emr.Main.User.type.Gender;
 import com.cloud.emr.Main.User.type.RoleType;
 import jakarta.persistence.*;
@@ -42,7 +43,6 @@ public class UserEntity {
     @OneToOne
     @JoinColumn(name = "id")
     private DepartmentEntity department;
-
 
     private String name;
     private Gender gender;

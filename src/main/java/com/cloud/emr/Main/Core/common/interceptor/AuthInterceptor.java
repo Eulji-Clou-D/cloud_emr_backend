@@ -8,15 +8,18 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
+
 
 import java.util.Arrays;
 
 @Component
 @Slf4j(topic = "AuthInterceptor")
 public class AuthInterceptor implements HandlerInterceptor {
+
 
     /*
      해당 코드는 설명용으로 주석을 많이 달라놨습니다.
@@ -59,6 +62,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 
             if (!hasAccess) {
                 log.warn("접근 거부: {} (요청 URI: {})", authentication.getAuthorities(), request.getRequestURI());
+
                 response.sendError(HttpServletResponse.SC_FORBIDDEN, "권한이 없습니다.");
                 return false;
             }

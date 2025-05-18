@@ -6,6 +6,7 @@ import com.cloud.emr.Main.Core.common.annotation.AuthUser;
 import com.cloud.emr.Main.User.entity.UserEntity;
 import com.cloud.emr.Main.User.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
@@ -42,7 +43,6 @@ public class AuthUserResolver implements HandlerMethodArgumentResolver {
                     return new CustomAuthenticationException("JWT 인증 실패");
                 }
         );
-
 
         return user;
     }

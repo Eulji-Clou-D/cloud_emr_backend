@@ -1,8 +1,10 @@
 package com.cloud.emr.Main.Core.Jwt;
 
+
 import com.cloud.emr.Main.User.entity.UserEntity;
 import com.cloud.emr.Main.User.repository.UserRepository;
 import com.cloud.emr.Main.User.service.UserService;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,6 +28,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final UserRepository userRepository;
 
+
     private static final String AUTHORIZATION_HEADER = "Authorization";
 
     @Override
@@ -40,12 +43,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 if (jwtUtil.validateToken(token)) {
                     Authentication authentication = jwtUtil.getAuthentication(token);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
+                  
                     log.info("Security Context에 인증 정보를 저장 성공. 인증된 사용자: {}, 권한: {}", authentication.getPrincipal(), authentication.getAuthorities());
 
                     // 세션에 role포함
                     // Long userId = jwtUtil.getUserIdFromToken(token);
                     // UserEntity user = userRepository.findById(userId).orElseThrow(()-> new CustomAuthenticationException("존재하지 않은 유저"));
                     // request.setAttribute("authUser", user);
+
                 } else {
                     throw new CustomAuthenticationException("유효하지 않은 토큰입니다.");
                 }

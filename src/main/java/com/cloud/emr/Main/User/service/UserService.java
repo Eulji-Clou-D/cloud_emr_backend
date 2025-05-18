@@ -1,6 +1,7 @@
 package com.cloud.emr.Main.User.service;
 
 import com.cloud.emr.Main.User.dto.WaitUserResponse;
+
 import com.cloud.emr.Main.User.entity.UserEntity;
 import com.cloud.emr.Main.User.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,4 +33,5 @@ public class UserService {
         user.setRole(roleType);
         userRepository.save(user);
     }
+
 }

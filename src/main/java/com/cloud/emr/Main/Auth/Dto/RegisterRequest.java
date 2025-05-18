@@ -1,6 +1,8 @@
 package com.cloud.emr.Main.Auth.Dto;
 
+
 import com.cloud.emr.Main.Department.entity.DepartmentEntity;
+
 import com.cloud.emr.Main.User.entity.UserEntity;
 import com.cloud.emr.Main.User.type.Gender;
 import com.cloud.emr.Main.User.type.RoleType;
@@ -19,8 +21,10 @@ public class RegisterRequest {
     private HospitalCode userHospitalCode;
      */
 
+
     @NotEmpty(message = "부서는 필수항목입니다.")
     private long department;
+
 
     @NotEmpty(message = "이름은 필수항목입니다.")
     private String name;
@@ -66,6 +70,7 @@ public class RegisterRequest {
          return UserEntity.builder()
                 // .hospitalCode(this.userHospitalCode)
                 .department(departmentEntity)
+
                 .role(RoleType.WAIT) //우선 WAIT로 진행
                 .loginId(this.loginId)
                 .password(this.password)
@@ -78,6 +83,5 @@ public class RegisterRequest {
                 .hireDate(this.hireDate.atStartOfDay()) // LocalDate로부터 LocalDateTime으로 변환
                 .build();
     }
-
 
 }

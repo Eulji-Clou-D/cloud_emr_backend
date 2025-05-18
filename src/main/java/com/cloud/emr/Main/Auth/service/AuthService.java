@@ -4,8 +4,10 @@ import com.cloud.emr.Main.Auth.Dto.TokenResponse;
 import com.cloud.emr.Main.Core.Jwt.JwtUtil;
 import com.cloud.emr.Main.Auth.Dto.LoginRequest;
 import com.cloud.emr.Main.Auth.Dto.RegisterRequest;
+
 import com.cloud.emr.Main.Department.entity.DepartmentEntity;
 import com.cloud.emr.Main.Department.repository.DepartmentRepository;
+
 import com.cloud.emr.Main.User.entity.UserEntity;
 import com.cloud.emr.Main.User.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +22,9 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
+
     private final DepartmentRepository departmentRepository;
+
 
     public void register(RegisterRequest userRegisterRequest) {
 
@@ -35,6 +39,7 @@ public class AuthService {
 
         // DTO에서 Entity로 변환
         UserEntity userEntity = userRegisterRequest.toUserEntity(department);
+
         userEntity.setUserPassword(passwordEncoder.encode(userEntity.getPassword()));
 
         // 데이터베이스에 저장
@@ -57,5 +62,6 @@ public class AuthService {
         }
 
         return jwtUtil.generateTokens(user);
+
     }
 }

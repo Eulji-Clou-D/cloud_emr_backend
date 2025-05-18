@@ -5,6 +5,7 @@ import com.cloud.emr.Main.Auth.service.RefreshTokenService;
 import com.cloud.emr.Main.User.entity.UserEntity;
 import com.cloud.emr.Main.User.repository.UserRepository;
 import com.cloud.emr.Main.User.type.RoleType;
+
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
@@ -53,6 +54,7 @@ public class JwtUtil {
         String userIdString = String.valueOf(user.getId());
 
         String accessToken = generateAccessToken(userIdString, user.getRole(), date);
+
         String refreshToken = generateRefreshToken(userIdString, date);
 
         refreshTokenService.saveRefreshToken(userIdString, refreshToken);
@@ -64,6 +66,7 @@ public class JwtUtil {
         return Jwts.builder()
                 .setSubject(userId)
                 .claim("role", role.toString())
+
                 .setIssuedAt(date)
                 .setExpiration(new Date(date.getTime() + ACCESS_TOKEN_EXPIRE_TIME))
                 .signWith(key, SignatureAlgorithm.HS512)
@@ -113,7 +116,9 @@ public class JwtUtil {
 
         UserEntity user = userRepository.findById(Long.valueOf(claims.getSubject())).
                 orElseThrow();
+      
         List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_" +user.getRole().toString()));
+
         return new UsernamePasswordAuthenticationToken(user.getLoginId(), null, authorities);
     }
 

@@ -35,13 +35,16 @@ public class WebConfig implements WebMvcConfigurer {
      * 인터셉터 설정
      * - 요청 전/후 공통 로직을 처리할 때 사용됨 (ex. 인증, 로깅 등)
      * - 여기서는 인증 처리를 담당
+
      * - 추가할 작업 : 스웨거.
+
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns("/auth/login", "/auth/register", "/callback/**");
+
     }
 
     /**
