@@ -98,18 +98,75 @@ public class DoctorTreatmentController {
     }
 
     //일정 수정
-    // 환자 간의 일정이 여러개라도, 화면에 뿌려질테고, 해당 스케쥴 번호를 통해 수정할 수 있음
-//    @PostMapping("/update")
-//    public ResponseEntity<Object> updateDoctorTreatment(@RequestParam Long userId, @RequestBody DoctorTreatmentRequest doctorTreatmentRequest) {
-//        try{
-//
-//
-//
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
-//                    "message", "진료 일정 수정 실패",
-//                    "data", e.getMessage()
-//            ));
-//        }
-//    }
+    // 화면에 뿌려지는 스케쥴 목록들 중 하나를 수정하고자 할 때, 해당 스케쥴 번호를 이용할 것임.
+    // 따라서 해당 스케쥴의 소유자(userId)만 확인 후에 수정하는 절차를 밟겠음.
+    @PostMapping("/update")
+    public ResponseEntity<Object> updateDoctorTreatment(@RequestParam Long userId, @RequestParam Long doctorTreatmentId, @RequestBody DoctorTreatmentRequest doctorTreatmentRequest) {
+        try{
+
+            DoctorTreatmentEntity targetSchedule = doctorTreatmentService.findById(doctorTreatmentId);
+
+            if(targetSchedule == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
+                        "message","존재하지 않는 진료 스케쥴 번호",
+                        "data", doctorTreatmentId
+                ));
+            }
+
+            UserEntity ownerCheck = targetSchedule.getUserEntity();
+
+            if (ownerCheck.getUserId().equals(userId)) {
+                DoctorTreatmentResponse response = doctorTreatmentService.updateDoctorTreatment(doctorTreatmentId, doctorTreatmentRequest);
+
+                if(response == null) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
+                            "message","일정 생성 불가(일정이 겹치거나, 존재하지 않는 환자)"
+                    ));
+                }
+
+                return ResponseEntity.status(HttpStatus.OK).body(Map.of(
+                        "message","일정 수정 성공",
+                        "data", response
+                ));
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
+                        "message","스케쥴 등록정보가 일치하지 않습니다.",
+                        "data", doctorTreatmentId
+                ));
+            }
+
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
+                    "message", "진료 일정 수정 실패",
+                    "data", e.getMessage()
+            ));
+        }
+    }
+
+    //일정 삭제
+    @PostMapping("/delete")
+    public ResponseEntity<Object> deleteDoctorTreatment(@RequestParam Long doctorTreatmentId) {
+        try{
+            DoctorTreatmentEntity doctorTreatment = doctorTreatmentService.findById(doctorTreatmentId);
+            if (doctorTreatment == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
+                        "message","존재하지 않는 진료스케쥴이 아닙니다.",
+                        "data", doctorTreatmentId
+                ));
+            }
+            DoctorTreatmentResponse response = doctorTreatmentService.deleteById(doctorTreatmentId);
+
+            return ResponseEntity.status(HttpStatus.OK).body(Map.of(
+                    "message","삭제 성공",
+                    "data", response
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
+                    "message","스케쥴 삭제 실패",
+                    "data", e.getMessage()
+            ));
+        }
+    }
+
 }
