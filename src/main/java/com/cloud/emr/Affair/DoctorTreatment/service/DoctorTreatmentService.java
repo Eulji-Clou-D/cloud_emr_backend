@@ -1,6 +1,5 @@
 package com.cloud.emr.Affair.DoctorTreatment.service;
 
-
 import com.cloud.emr.Affair.DoctorTreatment.dto.DoctorTreatmentRequest;
 import com.cloud.emr.Affair.DoctorTreatment.dto.DoctorTreatmentResponse;
 import com.cloud.emr.Affair.DoctorTreatment.entity.DoctorTreatmentEntity;

@@ -28,16 +28,11 @@ public class CheckInController {
     private CheckInService checkInService;
 
     @Autowired
-    private CheckInRepository checkInRepository;
-
-    @Autowired
     private UserService userService;
 
     @Autowired
     private PatientService patientService;
 
-    @Autowired
-    private PatientRepository patientRepository;
 
     // 1. 접수 등록
     @PostMapping("/register")
@@ -62,7 +57,7 @@ public class CheckInController {
             Map<String, Object> responseData = Map.of(
                     "checkInId", newCheckIn.getCheckInId(),
                     "patientNo", newCheckIn.getPatientEntity().getPatientNo(),
-                    "userId", userEntity.getUserId(), // userEntity에서 userId만 추출
+                    "userId", userEntity.getId(), // userEntity에서 userId만 추출
                     "checkInDate", newCheckIn.getCheckInDate(),
                     "checkInPurpose", newCheckIn.getCheckInPurpose()
             );

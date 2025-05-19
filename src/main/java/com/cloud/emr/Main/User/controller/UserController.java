@@ -1,57 +1,42 @@
 package com.cloud.emr.Main.User.controller;
 
-import com.cloud.emr.Main.User.dto.UserLoginRequest;
-import com.cloud.emr.Main.User.dto.UserRegisterRequest;
+import com.cloud.emr.Main.Core.common.annotation.AuthRole;
+import com.cloud.emr.Main.Core.common.annotation.AuthUser;
+import com.cloud.emr.Main.User.dto.WaitApprovedRequest;
+import com.cloud.emr.Main.User.dto.WaitUserResponse;
 import com.cloud.emr.Main.User.entity.UserEntity;
 import com.cloud.emr.Main.User.service.UserService;
+import com.cloud.emr.Main.User.type.RoleType;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
+@RequiredArgsConstructor
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @PostMapping("/register")
-    // 다양한 데이터 타입을 반환 받기 위한 ResponseEntity<Object> 사용
-    public ResponseEntity<Object> registerUser(@RequestBody @Valid UserRegisterRequest userRegisterRequest) {
+    @GetMapping("/approved/waitlist")
+    @AuthRole(roles = {RoleType.ADMIN})
+    public List<WaitUserResponse> getUsersToBeApproved() {
+       return userService.getUsersToBeApproved();
+    }
+
+    @PostMapping("/approved/role")
+    @AuthRole(roles = {RoleType.ADMIN})
+    public ResponseEntity<Object> approvedRole(@Valid @RequestBody WaitApprovedRequest waitApprovedRequest) {
         try {
-
-            UserEntity userEntity = userService.registerUser(userRegisterRequest);
-
-            // user_id를 포함해 성공 응답 반환
-            return ResponseEntity.ok(Map.of(
-                    "message", "회원가입 성공",
-                    "user_id", userEntity.getUserId()  // user_id 반환
-            ));
-
+            userService.changeUserRole(waitApprovedRequest.getUserId(),waitApprovedRequest.getRole());
+            return ResponseEntity.ok().body("승인 완료");
         } catch (Exception e) {
-            //
-            return ResponseEntity.badRequest().body(Map.of(
-                    "message", "회원가입 실패",
-                    "error", e.getMessage()
-            ));
+            return ResponseEntity.badRequest().body("권한 변경 실패: " + e.getMessage());
         }
     }
 
-
-    @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody UserLoginRequest userLoginRequest) {
-
-        return null;
-
-    }
-
-
-
 }
-

@@ -11,4 +11,5 @@ import java.util.Optional;
 @Repository
 public interface DoctorTreatmentRepository extends JpaRepository<DoctorTreatmentEntity, Long> {
     List<DoctorTreatmentEntity> findAllByUserEntity(Optional<UserEntity> userEntity);
+
 }

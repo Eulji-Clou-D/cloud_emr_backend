@@ -21,6 +21,7 @@ public class DoctorTreatmentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "doctor_treatment_id", nullable = false)
+
     private Long doctorTreatmentId;
 
     @ManyToOne(fetch = FetchType.LAZY)
