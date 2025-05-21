@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class DoctorTreatmentService {
@@ -155,5 +156,25 @@ public class DoctorTreatmentService {
                 doctorTreatmentEntity.getDoctorTreatmentStart(),
                 doctorTreatmentEntity.getDoctorTreatmentEnd()
         );
+    }
+
+    public List<DoctorTreatmentResponse> getAllDoctorTreatmentByUserId(Long userId) {
+        UserEntity targetUser = userRepository.findById(userId).orElseThrow(
+                () -> new IllegalArgumentException("해당 유저가 존재하지 않음")
+        );
+
+        List<DoctorTreatmentEntity> doctorTreatmentEntities = doctorTreatmentRepository.findByUserEntity(targetUser);
+
+        return doctorTreatmentEntities.stream().map(doctorTreatmentEntity -> {
+            DoctorTreatmentResponse doctorTreatmentResponse = new DoctorTreatmentResponse(
+                    doctorTreatmentEntity.getDoctorTreatmentId(),
+                    doctorTreatmentEntity.getPatientEntity().getPatientNo(),
+                    doctorTreatmentEntity.getUserEntity().getUserId(),
+                    doctorTreatmentEntity.getDoctorTreatmentStart(),
+                    doctorTreatmentEntity.getDoctorTreatmentEnd()
+            );
+
+            return doctorTreatmentResponse;
+        }).collect(Collectors.toList());
     }
 }
