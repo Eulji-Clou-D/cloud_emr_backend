@@ -31,7 +31,7 @@ public class HolidayEntity {
     private LocalDate holidayDate;
 
     // 국가 공휴일 여부, True = 국가 공휴일, False = 병원 자체 휴일
-    @Column(name = "holiday_reason", nullable = false)
+    @Column(name = "holiday_national", nullable = false)
     private Boolean holidayNational;
 
     // 휴일 사유
