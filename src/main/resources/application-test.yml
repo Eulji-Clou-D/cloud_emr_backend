@@ -6,7 +6,10 @@ spring:
       on-profile: test  # test 프로필이 활성화되었을 때만 적용됨
 
   datasource:
-    url: jdbc:mysql://localhost:3306/emr  # 프로덕션용 데이터베이스 URL
-    username: root  # 프로덕션용 데이터베이스 사용자명
-    password: 1234  # 프로덕션용 데이터베이스 비밀번호
+    url: jdbc:mysql://localhost:3306/emr  #  데이터베이스 URL
+    username: root  # 공개용 데이터베이스 사용자명
+    password: 공개용  # 데이터베이스 비밀번호
 
+
+jwt:
+  secret: xkZ+ie1/jN/XDhsFHYef8eHDV68ZsF58CUZ7R7ZYDswSmDhg6F0a+OLvnMyqf1A+dX4cZwLqeFcbEmddxEvR+g==

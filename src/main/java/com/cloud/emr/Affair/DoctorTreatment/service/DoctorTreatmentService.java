@@ -9,14 +9,12 @@ import com.cloud.emr.Affair.Patient.entity.PatientEntity;
 import com.cloud.emr.Affair.Patient.service.PatientService;
 import com.cloud.emr.Main.User.entity.UserEntity;
 import com.cloud.emr.Main.User.repository.UserRepository;
+import com.cloud.emr.Main.User.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -26,9 +24,13 @@ public class DoctorTreatmentService {
     @Autowired
     private DoctorTreatmentRepository doctorTreatmentRepository;
     @Autowired
+    private UserService userService;
+    @Autowired
     private UserRepository userRepository;
     @Autowired
     private PatientService patientService;
+    @Autowired
+    private DoctorTreatmentService doctorTreatmentService;
 
     // 생성 시 겹칠때
     public boolean isOverlap(Long reqUserId, LocalDateTime reqStartTime, LocalDateTime reqEndTime) {
@@ -78,11 +80,37 @@ public class DoctorTreatmentService {
         return false;
     }
 
-    public DoctorTreatmentResponse createTreatment(DoctorTreatmentRequest doctorTreatmentRequest, UserEntity userEntity, PatientEntity patientEntity) {
+    public DoctorTreatmentResponse createTreatment(DoctorTreatmentRequest doctorTreatmentRequest) {
+
+        //의사는 겹쳐도 상관 없음. reqStartTime, reqEndTime은 겹치면 안 됨.
+        Long reqUserId = doctorTreatmentRequest.getUserId();
+
+        LocalDateTime reqStartTime = doctorTreatmentRequest.getDoctorTreatmentStart();
+        LocalDateTime reqEndTime = doctorTreatmentRequest.getDoctorTreatmentEnd();
+
+        //의사 정보 가져오기
+        UserEntity targetUser = userService.findUserById(doctorTreatmentRequest.getUserId());
+        if (targetUser == null) {
+            throw new RuntimeException("해당하는 유저번호가 없습니다.");
+        }
+
+        //환자 정보 가져오기
+        PatientEntity targetPatient = patientService.findPatientByNo(doctorTreatmentRequest.getPatientNo());
+        if (targetPatient == null) {
+            throw new RuntimeException("해당하는 환자 번호가 없습니다.");
+        }
+
+        //일정 겹치는지 확인
+        if (doctorTreatmentService.isOverlap(reqUserId, reqStartTime, reqEndTime)) {
+            throw new RuntimeException("일정이 겹칩니다.");
+        }
+
+
+
         DoctorTreatmentEntity doctorTreatmentEntity = DoctorTreatmentEntity.builder()
                 .doctorTreatmentId(doctorTreatmentRequest.getDoctorTreatmentId())
-                .userEntity(userEntity)
-                .patientEntity(patientEntity)
+                .userEntity(targetUser)
+                .patientEntity(targetPatient)
                 .doctorTreatmentStart(doctorTreatmentRequest.getDoctorTreatmentStart())
                 .doctorTreatmentEnd(doctorTreatmentRequest.getDoctorTreatmentEnd())
                 .build();
@@ -91,7 +119,7 @@ public class DoctorTreatmentService {
 
         return new DoctorTreatmentResponse(
                 doctorTreatmentEntity.getDoctorTreatmentId(),
-                doctorTreatmentEntity.getUserEntity().getUserId(),
+                doctorTreatmentEntity.getUserEntity().getId(),
                 doctorTreatmentEntity.getPatientEntity().getPatientNo(),
                 doctorTreatmentEntity.getDoctorTreatmentStart(),
                 doctorTreatmentEntity.getDoctorTreatmentEnd()
@@ -102,56 +130,78 @@ public class DoctorTreatmentService {
         return doctorTreatmentRepository.findById(doctorTreatmentId).orElse(null);
     }
 
-    public DoctorTreatmentResponse updateDoctorTreatment(Long doctorTreatmentId, DoctorTreatmentRequest doctorTreatmentRequest) {
-        DoctorTreatmentEntity existing = doctorTreatmentRepository.findById(doctorTreatmentId).orElseThrow(
-                () -> new IllegalArgumentException("예상치 못한 에러")
-        );
+    public DoctorTreatmentResponse updateDoctorTreatment(Long userId, Long doctorTreatmentId, DoctorTreatmentRequest doctorTreatmentRequest) {
 
-        //수정하려는 일정이 기존 일정과 겹칠때
-        if (isUpdateOverlap(
-                doctorTreatmentId,
-                existing.getUserEntity().getUserId(),
-                doctorTreatmentRequest.getDoctorTreatmentStart(),
-                doctorTreatmentRequest.getDoctorTreatmentEnd()
-               )
-           ) {
-            return null;
+
+        DoctorTreatmentEntity targetSchedule = doctorTreatmentService.findById(doctorTreatmentId);
+
+        if (targetSchedule == null) {
+            throw new RuntimeException("존재하지 않는 스케쥴 번호");
         }
 
-        PatientEntity patient = patientService.findPatientByNo(doctorTreatmentRequest.getPatientNo());
+        UserEntity ownerCheck = targetSchedule.getUserEntity();
 
-        if (patient == null) {
-            return null;
-        }
+        if (ownerCheck.getId().equals(userId)) {
 
-        DoctorTreatmentEntity updateDoctorTreatment = DoctorTreatmentEntity.builder()
-                .doctorTreatmentId(existing.getDoctorTreatmentId())
-                .userEntity(existing.getUserEntity())
-                .patientEntity(patient)
-                .doctorTreatmentStart(doctorTreatmentRequest.getDoctorTreatmentStart())
-                .doctorTreatmentEnd(doctorTreatmentRequest.getDoctorTreatmentEnd())
-                .build();
+            DoctorTreatmentEntity existing = doctorTreatmentRepository.findById(doctorTreatmentId).orElseThrow(
+                    () -> new IllegalArgumentException("예상치 못한 에러")
+            );
 
-        DoctorTreatmentEntity saved = doctorTreatmentRepository.save(updateDoctorTreatment);
+            //수정하려는 일정이 기존 일정과 겹칠때
+            if (isUpdateOverlap(
+                    doctorTreatmentId,
+                    existing.getUserEntity().getId(),
+                    doctorTreatmentRequest.getDoctorTreatmentStart(),
+                    doctorTreatmentRequest.getDoctorTreatmentEnd()
+            )
+            ) {
+                return null;
+            }
 
-        return new DoctorTreatmentResponse(
-                saved.getDoctorTreatmentId(),
-                saved.getUserEntity().getUserId(),
-                saved.getPatientEntity().getPatientNo(),
-                saved.getDoctorTreatmentStart(),
-                saved.getDoctorTreatmentEnd()
-        );
+            PatientEntity patient = patientService.findPatientByNo(doctorTreatmentRequest.getPatientNo());
+
+            if (patient == null) {
+                return null;
+            }
+
+            DoctorTreatmentEntity updateDoctorTreatment = DoctorTreatmentEntity.builder()
+                    .doctorTreatmentId(existing.getDoctorTreatmentId())
+                    .userEntity(existing.getUserEntity())
+                    .patientEntity(patient)
+                    .doctorTreatmentStart(doctorTreatmentRequest.getDoctorTreatmentStart())
+                    .doctorTreatmentEnd(doctorTreatmentRequest.getDoctorTreatmentEnd())
+                    .build();
+
+            DoctorTreatmentEntity saved = doctorTreatmentRepository.save(updateDoctorTreatment);
+
+            return new DoctorTreatmentResponse(
+                    saved.getDoctorTreatmentId(),
+                    saved.getUserEntity().getId(),
+                    saved.getPatientEntity().getPatientNo(),
+                    saved.getDoctorTreatmentStart(),
+                    saved.getDoctorTreatmentEnd()
+            );
+        } else {
+        throw new RuntimeException("스케쥴 등록정보 일치하지 않음");
+    }
 
     }
 
     public DoctorTreatmentResponse deleteById(Long doctorTreatmentId) {
+
+        DoctorTreatmentEntity doctorTreatment = doctorTreatmentService.findById(doctorTreatmentId);
+        if (doctorTreatment == null) {
+            throw new RuntimeException("존재하지 않는 진료 스케쥴");
+        }
+
+
         DoctorTreatmentEntity doctorTreatmentEntity = doctorTreatmentRepository.findById(doctorTreatmentId).orElseThrow(() -> new IllegalArgumentException("예상치 못한 에러"));
 
         doctorTreatmentRepository.delete(doctorTreatmentEntity);
 
         return new DoctorTreatmentResponse(
                 doctorTreatmentEntity.getDoctorTreatmentId(),
-                doctorTreatmentEntity.getUserEntity().getUserId(),
+                doctorTreatmentEntity.getUserEntity().getId(),
                 doctorTreatmentEntity.getPatientEntity().getPatientNo(),
                 doctorTreatmentEntity.getDoctorTreatmentStart(),
                 doctorTreatmentEntity.getDoctorTreatmentEnd()
@@ -159,6 +209,13 @@ public class DoctorTreatmentService {
     }
 
     public List<DoctorTreatmentResponse> getAllDoctorTreatmentByUserId(Long userId) {
+
+
+        if(userService.findUserById(userId) == null) {
+            throw new RuntimeException("존재하지 않는 유저");
+        }
+
+
         UserEntity targetUser = userRepository.findById(userId).orElseThrow(
                 () -> new IllegalArgumentException("해당 유저가 존재하지 않음")
         );
@@ -169,7 +226,7 @@ public class DoctorTreatmentService {
             DoctorTreatmentResponse doctorTreatmentResponse = new DoctorTreatmentResponse(
                     doctorTreatmentEntity.getDoctorTreatmentId(),
                     doctorTreatmentEntity.getPatientEntity().getPatientNo(),
-                    doctorTreatmentEntity.getUserEntity().getUserId(),
+                    doctorTreatmentEntity.getUserEntity().getId(),
                     doctorTreatmentEntity.getDoctorTreatmentStart(),
                     doctorTreatmentEntity.getDoctorTreatmentEnd()
             );

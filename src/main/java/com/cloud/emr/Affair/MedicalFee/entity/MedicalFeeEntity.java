@@ -1,7 +1,7 @@
 package com.cloud.emr.Affair.MedicalFee.entity;
 
 
-import com.cloud.emr.Affair.Treatment.entity.TreatmentEntity;
+import com.cloud.emr.Treatment.Treatment.entity.TreatmentEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,6 +24,6 @@ public class MedicalFeeEntity {
     private MedicalTypeEntity medicalTypeEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "treatment_id", referencedColumnName = "treatment_id", columnDefinition = "INT")
+    @JoinColumn(name = "treatment_id", referencedColumnName = "treatment_id")
     private TreatmentEntity treatmentEntity;
 }

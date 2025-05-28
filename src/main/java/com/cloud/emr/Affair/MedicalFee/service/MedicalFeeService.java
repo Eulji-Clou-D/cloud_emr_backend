@@ -5,9 +5,8 @@ import com.cloud.emr.Affair.MedicalFee.dto.MedicalFeeResponse;
 import com.cloud.emr.Affair.MedicalFee.entity.MedicalFeeEntity;
 import com.cloud.emr.Affair.MedicalFee.entity.MedicalTypeEntity;
 import com.cloud.emr.Affair.MedicalFee.repository.MedicalFeeRepository;
-import com.cloud.emr.Affair.Treatment.dto.TreatmentResponse;
-import com.cloud.emr.Affair.Treatment.entity.TreatmentEntity;
-import com.cloud.emr.Affair.Treatment.repository.TreatmentRepository;
+import com.cloud.emr.Treatment.Treatment.entity.TreatmentEntity;
+import com.cloud.emr.Treatment.Treatment.repository.TreatmentRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +37,7 @@ public class MedicalFeeService {
                 medicalFeeEntity.getTreatmentEntity().getTreatmentId()
         );
     }
-
+/*
     // medicalfee 생성시 자동으로 총 금액이 업데이트 되도록
     // 추후 MedicalType Update시 수정된 총 금액이 반영되도록 업데이트가 필요함
     @Transactional
@@ -80,11 +79,13 @@ public class MedicalFeeService {
                 updatedTreatment.getTreatmentDoc(),
                 updatedTreatment.getTreatmentTotalFee()
         );
-        return treatmentResponse;
+
+
+        return null;
 
 
 
     }
 
-
+ */
 }

@@ -7,8 +7,8 @@ import com.cloud.emr.Affair.MedicalFee.entity.MedicalTypeEntity;
 import com.cloud.emr.Affair.MedicalFee.repository.MedicalTypeRepository;
 import com.cloud.emr.Affair.MedicalFee.service.MedicalFeeService;
 import com.cloud.emr.Affair.MedicalFee.service.MedicalTypeService;
-import com.cloud.emr.Affair.Treatment.entity.TreatmentEntity;
-import com.cloud.emr.Affair.Treatment.service.TreatmentService;
+import com.cloud.emr.Treatment.Treatment.entity.TreatmentEntity;
+import com.cloud.emr.Treatment.Treatment.service.TreatmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +30,7 @@ public class MedicalFeeController {
     @Autowired
     private MedicalTypeService medicalTypeService;
 
-
+/*
     //진료ID에 따른 진료 유형 등록
     @PostMapping("/register")
     public ResponseEntity<Object> registerMedicalFee(@RequestBody MedicalFeeRequest medicalFeeRequest, @RequestParam Long treatmentId) {
@@ -75,5 +75,5 @@ public class MedicalFeeController {
             );
         }
     }
-
+*/
 }
