@@ -22,10 +22,10 @@ public class HolidayController {
     // 1. 휴일 등록
     @PostMapping
     public ResponseEntity<Map<String, Object>> register(@RequestBody HolidayRequest req) {
-        HolidayResponse dto = service.registerHoliday(req);
+        ResponseEntity<Void> response = service.registerHoliday(req);
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
                 "message", "휴일 등록 성공",
-                "data", dto
+                "data", response
         ));
     }
 
@@ -34,10 +34,10 @@ public class HolidayController {
     public ResponseEntity<Map<String, Object>> update(
             @PathVariable Long id,
             @RequestBody HolidayRequest req) {
-        HolidayResponse dto = service.updateHoliday(id, req);
+        ResponseEntity<HolidayResponse> response = service.updateHoliday(id, req);
         return ResponseEntity.ok(Map.of(
                 "message", "휴일 수정 성공",
-                "data", dto
+                "data", response
         ));
     }
 
