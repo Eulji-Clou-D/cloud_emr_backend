@@ -28,7 +28,7 @@ public class HolidayService {
 
     /** 1. 휴일 등록 **/
     @Transactional(rollbackFor = Exception.class)
-    public Boolean registerHoliday(HolidayRequest req) {
+    public void registerHoliday(HolidayRequest req) {
         try {
             HolidayEntity e = HolidayEntity.builder()
                     .holidayDate(req.getHolidayDate())
@@ -37,10 +37,9 @@ public class HolidayService {
                     .build();
 
             holidayRepository.save(e);
-            return true;
         } catch (Exception e) {
-            System.out.printf("Error in register Holiday service: %s", e);
-            return false;
+            System.out.printf("휴일 등록 중 오류 발생: %s", e);
+            throw new RuntimeException("휴일 등록 중 오류 발생", e);
         }
 
     }

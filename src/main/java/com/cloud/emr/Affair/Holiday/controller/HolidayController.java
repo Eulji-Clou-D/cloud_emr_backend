@@ -21,10 +21,9 @@ public class HolidayController {
 
     // 1. 휴일 등록
     @PostMapping
-    public ResponseEntity<String> register(@RequestBody HolidayRequest req) {
-        Boolean response = service.registerHoliday(req);
-        if (response) return ResponseEntity.status(HttpStatus.CREATED).body("휴일 등록 성공");
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("휴일 등록 실패");
+    public ResponseEntity<Void> register(@RequestBody HolidayRequest req) {
+        service.registerHoliday(req);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     // 2. 휴일 수정
