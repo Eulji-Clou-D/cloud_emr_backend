@@ -28,15 +28,21 @@ public class HolidayService {
 
     /** 1. 휴일 등록 **/
     @Transactional(rollbackFor = Exception.class)
-    public ResponseEntity<Void> registerHoliday(HolidayRequest req) {
-        HolidayEntity e = HolidayEntity.builder()
-                .holidayDate(req.getHolidayDate())
-                .holidayNational(req.getHolidayNational())
-                .holidayReason(req.getHolidayReason())
-                .build();
+    public Boolean registerHoliday(HolidayRequest req) {
+        try {
+            HolidayEntity e = HolidayEntity.builder()
+                    .holidayDate(req.getHolidayDate())
+                    .holidayNational(req.getHolidayNational())
+                    .holidayReason(req.getHolidayReason())
+                    .build();
 
-        holidayRepository.save(e);
-        return ResponseEntity.ok().build();
+            holidayRepository.save(e);
+            return true;
+        } catch (Exception e) {
+            System.out.printf("Error in register Holiday service: %s", e);
+            return false;
+        }
+
     }
 
     /** 2. 휴일 수정 **/
