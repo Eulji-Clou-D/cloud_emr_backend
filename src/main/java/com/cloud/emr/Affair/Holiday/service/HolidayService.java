@@ -38,7 +38,7 @@ public class HolidayService {
 
             holidayRepository.save(e);
         } catch (Exception e) {
-            System.out.printf("휴일 등록 중 오류 발생: %s", e);
+            System.out.printf("휴일 등록 중 오류 발생: %s\n", e);
             throw new RuntimeException("휴일 등록 중 오류 발생", e);
         }
 
