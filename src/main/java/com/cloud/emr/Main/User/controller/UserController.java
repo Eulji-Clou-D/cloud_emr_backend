@@ -25,7 +25,7 @@ public class UserController {
     @GetMapping("/approved/waitlist")
     @AuthRole(roles = {RoleType.ADMIN})
     public List<WaitUserResponse> getUsersToBeApproved() {
-       return userService.getUsersToBeApproved();
+        return userService.getUsersToBeApproved();
     }
 
     @PostMapping("/approved/role")

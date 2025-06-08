@@ -1,5 +1,5 @@
-# application-example.yml
-# application-test.yml, application-dev.yml 는 뭐 실수로 올려도 되나 application-prod.yml는 올리지마세요.
+# application-example.yml 예시 양식입니다.
+# application-dev.yml 는 뭐 실수로 올려도 되나 application-prod.yml는 올리지마세요.
 
 spring:
   config:
@@ -7,6 +7,9 @@ spring:
       on-profile: example  # example 프로필이 활성화되었을 때만 적용됨
 
   datasource:
-    url: jdbc:mysql://localhost:3306/~~~~  # 프로덕션용 데이터베이스 URL
-    username: ~~~~  # 프로덕션용 데이터베이스 사용자명
-    password: ~~~~  # 프로덕션용 데이터베이스 비밀번호
+    url: jdbc:mysql://localhost:3306/emr  # 프로덕션용 데이터베이스 URL
+    username: root  # 프로덕션용 데이터베이스 사용자명
+    password: 1234  # 프로덕션용 데이터베이스 비밀번호
+
+jwt:
+  secret: xkZ+ie1/jN/XDhsFHYef8eHDV68ZsF58CUZ7R7ZYDswSmDhg6F0a+OLvnMyqf1A+dX4cZwLqeFcbEmddxEvR+g==

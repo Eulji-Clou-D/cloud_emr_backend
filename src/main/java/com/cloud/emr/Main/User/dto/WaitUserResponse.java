@@ -27,13 +27,13 @@ public class WaitUserResponse {
     }
     public static WaitUserResponse from(UserEntity userEntity) {
         return new WaitUserResponse(
-            userEntity.getId(),
-            userEntity.getLoginId(),
-            userEntity.getName(),
-            userEntity.getEmail(),
-            userEntity.getDepartment().getName(),
-            userEntity.getGender().toString(),
-            userEntity.getTelNum()
+                userEntity.getId(),
+                userEntity.getLoginId(),
+                userEntity.getName(),
+                userEntity.getEmail(),
+                userEntity.getDepartment().getName(),
+                userEntity.getGender().toString(),
+                userEntity.getTelNum()
         );
     }
 }

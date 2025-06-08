@@ -5,7 +5,7 @@ spring:
   application:
     name: emr
   profiles:
-    active: test #dev 개발기 test 테스트 prod 운영기
+    active: dev # dev 개발기 prod 운영기
   datasource:
     url: ${spring.datasource.url}
     username: ${spring.datasource.username}

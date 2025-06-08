@@ -22,9 +22,8 @@ public class RegisterRequest {
      */
 
 
-    @NotEmpty(message = "부서는 필수항목입니다.")
+    @NotNull(message = "부서는 필수항목입니다.")
     private long department;
-
 
     @NotEmpty(message = "이름은 필수항목입니다.")
     private String name;

@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -47,5 +48,9 @@ public class RecessEntity {
     @CreationTimestamp
     @Column(name = "recess_create", updatable = false)
     private LocalDateTime recessCreate;
+
+    // 휴진 수정일
+    @Column(name = "recess_update")
+    private LocalDateTime recessUpdate;
 
 }
