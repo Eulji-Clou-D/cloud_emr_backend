@@ -8,6 +8,7 @@ import com.cloud.emr.Main.User.entity.UserEntity;
 import com.cloud.emr.Main.User.repository.UserRepository;
 import com.cloud.emr.Main.User.type.RoleType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,21 +27,26 @@ public class HolidayService {
     private final HolidayRepository holidayRepository;
 
     /** 1. 휴일 등록 **/
-    @Transactional
-    public HolidayResponse registerHoliday(HolidayRequest req) {
-        HolidayEntity e = HolidayEntity.builder()
-                .holidayDate(req.getHolidayDate())
-                .holidayNational(req.getHolidayNational())
-                .holidayReason(req.getHolidayReason())
-                .build();
+    @Transactional(rollbackFor = Exception.class)
+    public void registerHoliday(HolidayRequest req) {
+        try {
+            HolidayEntity e = HolidayEntity.builder()
+                    .holidayDate(req.getHolidayDate())
+                    .holidayNational(req.getHolidayNational())
+                    .holidayReason(req.getHolidayReason())
+                    .build();
 
-        holidayRepository.save(e);
-        return toDto(e);
+            holidayRepository.save(e);
+        } catch (Exception e) {
+            System.out.printf("휴일 등록 중 오류 발생: %s\n", e);
+            throw new RuntimeException("휴일 등록 중 오류 발생", e);
+        }
+
     }
 
     /** 2. 휴일 수정 **/
-    @Transactional
-    public HolidayResponse updateHoliday(Long id, HolidayRequest req) {
+    @Transactional(rollbackFor = Exception.class)
+    public ResponseEntity<HolidayResponse> updateHoliday(Long id, HolidayRequest req) {
         HolidayEntity e = holidayRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("휴일 정보를 찾을 수 없습니다."));
 
@@ -53,11 +59,11 @@ public class HolidayService {
                 .build();
 
         holidayRepository.save(updated);
-        return toDto(updated);
+        return ResponseEntity.ok(new HolidayResponse(updated));
     }
 
     /** 3. 휴일 삭제 **/
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void deleteHoliday(Long id) {
         HolidayEntity e = holidayRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("휴일 정보를 찾을 수 없습니다."));
@@ -72,7 +78,7 @@ public class HolidayService {
         List<HolidayEntity> holidayDateList = getHolidayDateByNumber(period, number);
         if (holidayDateList.isEmpty()) return Collections.emptyList();
         return holidayDateList.stream()
-                .map(this::toDto)
+                .map(HolidayResponse::new)
                 .collect(Collectors.toList());
     }
 
@@ -96,15 +102,6 @@ public class HolidayService {
             return holidayRepository.findAllByHolidayDateBetween(start, end);
         }
         return Collections.emptyList();
-    }
-
-    private HolidayResponse toDto(HolidayEntity e) {
-        return new HolidayResponse(
-                e.getId(),
-                e.getHolidayDate(),
-                e.getHolidayNational(),
-                e.getHolidayReason()
-        );
     }
 
 }
