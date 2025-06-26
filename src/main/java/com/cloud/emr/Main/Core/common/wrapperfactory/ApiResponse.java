@@ -29,7 +29,7 @@ public class ApiResponse<T> {
         return ResponseEntity.status(body.getCode()).body(body);
     }
 
-    public static <T> ResponseEntity<ApiResponse<T>> of(T data, String message) {
+    public static <T> ResponseEntity<ApiResponse<T>> of(String message, T data) {
         ApiResponse<T> body = ApiResponse.<T>builder()
                 .message(message)
                 .data(data)
@@ -37,7 +37,7 @@ public class ApiResponse<T> {
         return ResponseEntity.status(body.getCode()).body(body);
     }
 
-    public static <T> ResponseEntity<ApiResponse<T>> of(int code, T data, String message) {
+    public static <T> ResponseEntity<ApiResponse<T>> of(int code, String message, T data) {
         ApiResponse<T> body = ApiResponse.<T>builder()
                 .code(code)
                 .message(message)
@@ -74,7 +74,7 @@ public class ApiResponse<T> {
         return ResponseEntity.status(code).body(body);
     }
 
-    public static <T> ResponseEntity<ApiResponse<T>> fail(int code, T data, String message) {
+    public static <T> ResponseEntity<ApiResponse<T>> fail(int code, String message, T data) {
         ApiResponse<T> body = ApiResponse.<T>builder()
                 .success(false)
                 .code(code)

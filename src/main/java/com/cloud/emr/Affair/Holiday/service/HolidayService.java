@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -46,7 +47,7 @@ public class HolidayService {
 
     /** 2. 휴일 수정 **/
     @Transactional(rollbackFor = Exception.class)
-    public ResponseEntity<HolidayResponse> updateHoliday(Long id, HolidayRequest req) {
+    public HolidayResponse updateHoliday(Long id, HolidayRequest req) {
         HolidayEntity e = holidayRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("휴일 정보를 찾을 수 없습니다."));
 
@@ -59,7 +60,7 @@ public class HolidayService {
                 .build();
 
         holidayRepository.save(updated);
-        return ResponseEntity.ok(new HolidayResponse(updated));
+        return new HolidayResponse(updated);
     }
 
     /** 3. 휴일 삭제 **/
@@ -83,6 +84,7 @@ public class HolidayService {
     }
 
     // ─────────────────────────────────────────────────────────
+    // deprecate, divide to multiple methods validating different type of dates
     private Boolean validatePeriod(String period, String number) {
         return ("day".equals(period) && number.length() == 8) || ("year".equals(period) && number.length() == 4);
     }
