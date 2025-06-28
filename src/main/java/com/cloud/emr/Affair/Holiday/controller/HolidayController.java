@@ -56,6 +56,7 @@ public class HolidayController {
     @GetMapping("/week/{date}")
     @AuthRole(roles = {RoleType.ADMIN, RoleType.DOCTOR, RoleType.STAFF})
     public ResponseEntity<ApiResponse<List<HolidayResponse>>> readByWeek(@PathVariable String date) {
+        // yearWeek format: yyyyMMWd (e.g., 202507W1)
         List<HolidayResponse> response = service.readHolidayByWeek(date);
         return ApiResponse.of(String.format("%d개의 휴일 조회 성공", response.size()), response);
     }
@@ -70,6 +71,7 @@ public class HolidayController {
     @GetMapping("/quarter/{date}")
     @AuthRole(roles = {RoleType.ADMIN, RoleType.DOCTOR, RoleType.STAFF})
     public ResponseEntity<ApiResponse<List<HolidayResponse>>> readByQuarter(@PathVariable String date) {
+        // yearQuarter format: YYYYQn (e.g., 2025Q1)
         List<HolidayResponse> response = service.readHolidayByQuarter(date);
         return ApiResponse.of(String.format("%d개의 휴일 조회 성공", response.size()), response);
     }
@@ -84,9 +86,9 @@ public class HolidayController {
     // If security risk exists, tell me to change, like to post with request body HolidayRangeRequest
     @GetMapping("/range")
     @AuthRole(roles = {RoleType.ADMIN, RoleType.DOCTOR, RoleType.STAFF})
-    public ResponseEntity<ApiResponse<List<HolidayResponse>>> readByRange(String start, String end) {
-        List<HolidayResponse> response = service.readHolidayByRange(start, end);
-        return ApiResponse.of(String.format("%s - %s : %d개의 휴일 조회 성공", start, end, response.size()), response);
+    public ResponseEntity<ApiResponse<List<HolidayResponse>>> readByRange(String startDate, String endDate) {
+        List<HolidayResponse> response = service.readHolidayByRange(startDate, endDate);
+        return ApiResponse.of(String.format("%s - %s : %d개의 휴일 조회 성공", startDate, endDate, response.size()), response);
     }
 
 }
