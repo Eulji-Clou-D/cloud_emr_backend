@@ -12,6 +12,6 @@ public enum HolidayDateType {
 
     YEAR,       // 년
 
-    CUSTOM;     // 사용자 정의 기간
+    RANGE;     // 사용자 정의 기간
 
 }
