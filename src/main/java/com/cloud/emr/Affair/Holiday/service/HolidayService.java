@@ -195,17 +195,8 @@ public class HolidayService {
     }
 
     public static LocalDate getWeekStartOfDate(LocalDate date){
-        int week = date.get(ChronoField.ALIGNED_WEEK_OF_YEAR);
-        int weekYear = date.get(WeekFields.ISO.weekBasedYear());
-
-        // Get first day of the week (Monday)
-        LocalDate weekStart = LocalDate
-                .now()
-                .with(WeekFields.ISO.weekBasedYear(), weekYear)
-                .with(WeekFields.ISO.weekOfWeekBasedYear(), week)
-                .with(ChronoField.DAY_OF_WEEK, 1);  // Monday
-
-        return weekStart;
+        WeekFields wf = WeekFields.ISO;
+        return date.with(wf.dayOfWeek(), 1);
     }
 
 
