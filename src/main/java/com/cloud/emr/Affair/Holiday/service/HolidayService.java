@@ -157,7 +157,7 @@ public class HolidayService {
         if (weekNum == 5) {
             weekEnd = weekStart;
             for (int i = 0; i < 7; i++) {
-                if (weekEnd.getMonth().getValue() != weekStart.plusDays(i).getMonth().getValue()) break;
+                if (!weekEnd.getMonth().equals(weekStart.plusDays(i).getMonth())) break;
                 weekEnd = weekStart.plusDays(i);
             }
         }
@@ -193,7 +193,7 @@ public class HolidayService {
         int count = 0;
 
         for (LocalDate date : input) {
-            if (getWeekStartOfDate(weekEnd) != getWeekStartOfDate(date)) break;
+            if (!getWeekStartOfDate(weekEnd).equals(getWeekStartOfDate(date))) break;
             weekEnd = date;
             count++;
         }
