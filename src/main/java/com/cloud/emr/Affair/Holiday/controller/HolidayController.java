@@ -56,7 +56,7 @@ public class HolidayController {
     @GetMapping("/week/{date}")
     @AuthRole(roles = {RoleType.ADMIN, RoleType.DOCTOR, RoleType.STAFF})
     public ResponseEntity<ApiResponse<List<HolidayResponse>>> readByWeek(@PathVariable String date) {
-        // yearWeek format: yyyyMMWd (e.g., 202507W1)
+        // yearMonthWeek format: yyyyMMWd (e.g., 202507W1)
         List<HolidayResponse> response = service.readHolidayByWeek(date);
         return ApiResponse.of(String.format("%d개의 휴일 조회 성공", response.size()), response);
     }

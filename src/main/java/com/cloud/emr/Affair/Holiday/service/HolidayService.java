@@ -82,18 +82,18 @@ public class HolidayService {
 
     @Transactional(readOnly = true)
     public List<HolidayResponse> readHolidayByWeek(String yearMonthWeek) {
-        // yearWeek format: yyyyMMWd (e.g., 202507W1)
+        // yearMonthWeek format: yyyyMMWd (e.g., 202507W1)
         List<LocalDate> weekDaySpan = convertWeekToDaySpan(yearMonthWeek);
-        LocalDateTime startDate = weekDaySpan.get(0).atStartOfDay();
-        LocalDateTime endDate = weekDaySpan.get(1).atTime(23, 59, 59);
+        LocalDate startDate = weekDaySpan.get(0);
+        LocalDate endDate = weekDaySpan.get(1);
         return findBetween(startDate, endDate);
     }
 
     @Transactional(readOnly = true)
     public List<HolidayResponse> readHolidayByMonth(String yearMonth) {
         YearMonth ym = YearMonth.parse(yearMonth, DateTimeFormatter.ofPattern("yyyyMM"));
-        LocalDateTime startDate = ym.atDay(1).atStartOfDay();
-        LocalDateTime endDate = ym.atEndOfMonth().atTime(23, 59, 59);
+        LocalDate startDate = ym.atDay(1);
+        LocalDate endDate = ym.atEndOfMonth();
         return findBetween(startDate, endDate);
     }
 
@@ -106,33 +106,33 @@ public class HolidayService {
         Month startMonth = Month.of((quarter - 1) * 3 + 1);
         YearMonth startYm = YearMonth.of(year, startMonth);
         YearMonth endYm = startYm.plusMonths(2);
-        LocalDateTime startDate = startYm.atDay(1).atStartOfDay();
-        LocalDateTime endDate = endYm.atEndOfMonth().atTime(23, 59, 59);
+        LocalDate startDate = startYm.atDay(1);
+        LocalDate endDate = endYm.atEndOfMonth();
         return findBetween(startDate, endDate);
     }
 
     @Transactional(readOnly = true)
     public List<HolidayResponse> readHolidayByYear(String yearStr) {
         int year = Integer.parseInt(yearStr);
-        LocalDateTime startDate = LocalDate.of(year, 1, 1).atStartOfDay();
-        LocalDateTime endDate = LocalDate.of(year, 12, 31).atTime(23, 59, 59);
+        LocalDate startDate = LocalDate.of(year, 1, 1);
+        LocalDate endDate = LocalDate.of(year, 12, 31);
         return findBetween(startDate, endDate);
     }
 
     @Transactional(readOnly = true)
     public List<HolidayResponse> readHolidayByRange(String startStr, String endStr) {
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyyMMdd");
-        LocalDateTime startDate = LocalDate.parse(startStr, fmt).atStartOfDay();
-        LocalDateTime endDate = LocalDate.parse(endStr, fmt).atTime(23, 59, 59);
+        LocalDate startDate = LocalDate.parse(startStr, fmt);
+        LocalDate endDate = LocalDate.parse(endStr, fmt);
         return findBetween(startDate, endDate);
     }
 
-    private List<HolidayResponse> findBetween(LocalDateTime start, LocalDateTime end) {
+    // ─────────────────────────────────────────────────────────
+    private List<HolidayResponse> findBetween(LocalDate start, LocalDate end) {
         List<HolidayEntity> list = holidayRepository.findAllByHolidayDateBetween(start, end);
         return mapHolidayEntitiesToHolidayResponse(list);
     }
 
-    // ─────────────────────────────────────────────────────────
     // Maybe move this to core common?
     private List<HolidayResponse> mapHolidayEntitiesToHolidayResponse(List<HolidayEntity> entities) {
         if (entities == null || entities.isEmpty()) {

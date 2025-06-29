@@ -18,4 +18,3 @@ public class HolidayRequest {
     private String holidayReason;
 
 }
-

@@ -13,7 +13,7 @@ public interface HolidayRepository extends JpaRepository<HolidayEntity, Long> {
 
     HolidayEntity findByHolidayDate(LocalDate holidayDate);
 
-    List<HolidayEntity> findAllByHolidayDateBetween(LocalDateTime start, LocalDateTime end);
+    List<HolidayEntity> findAllByHolidayDateBetween(LocalDate start, LocalDate end);
 
 }
 
