@@ -142,14 +142,13 @@ public class HolidayService {
                 .map(HolidayResponse::new)
                 .collect(Collectors.toList());
     }
-    public static List<LocalDate> convertWeekToDaySpan(String yearWeek) {
-        int weekNum = Integer.parseInt(yearWeek.substring(yearWeek.length() - 1));
+    public static List<LocalDate> convertWeekToDaySpan(String yearMonthWeek) {
+        int weekNum = Integer.parseInt(yearMonthWeek.substring((yearMonthWeek.length()-1)));
         if (weekNum > 5) {
             throw new IllegalArgumentException("주차 값은 5 이하이어야 합니다.");
         }
 
-        List<LocalDate> input = splitWeekToSevenDays(yearWeek);
-
+        List<LocalDate> input = splitWeekToSevenDays(yearMonthWeek);
         int totalTrueDays = getTrueDaysInMonthWeek(input);
         LocalDate weekEnd = input.get(totalTrueDays-1);
         int daysToSubtract = weekNum == 1 ? totalTrueDays - 1: 6;
@@ -167,16 +166,24 @@ public class HolidayService {
         return List.of(weekStart, weekEnd);
     }
 
-    public static List<LocalDate> splitWeekToSevenDays(String yearWeek) {
-        String week = yearWeek.substring(7);
-        int day = Integer.parseInt(week.equals("1") ? "07" : String.valueOf(Integer.parseInt(week) * 7));
-        int month = Integer.parseInt(yearWeek.substring(4, 6));
-        int year = Integer.parseInt(yearWeek.substring(0, 4));
-        LocalDate end = LocalDate.of(year, month, day);
+    public static List<LocalDate> splitWeekToSevenDays(String yearMonthWeek) {
+        int year = Integer.parseInt(yearMonthWeek.substring(0, 4));
+        int month = Integer.parseInt(yearMonthWeek.substring(4, 6));
+        int week = Integer.parseInt(yearMonthWeek.substring(7));
+
+        // 해당 연-월의 1일을 기준으로 시작
+        LocalDate firstOfMonth = LocalDate.of(year, month, 1);
+
+        // ISO 주 기준으로 해당 월의 첫 번째 주가 시작되는 날부터 week-1주를 더함
+        LocalDate startOfWeek = firstOfMonth
+                .with(WeekFields.ISO.dayOfWeek(), 1) // 그 주의 월요일
+                .plusWeeks(week - 1);
+
         List<LocalDate> result = new ArrayList<>();
-        for (int i = 6; i >= 0; i--) {
-            result.add(end.minusDays(i));
+        for (int i = 0; i < 7; i++) {
+            result.add(startOfWeek.plusDays(i));
         }
+
         return result;
     }
 
