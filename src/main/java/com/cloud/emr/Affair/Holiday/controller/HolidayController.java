@@ -24,8 +24,12 @@ public class HolidayController {
     @PostMapping
     @AuthRole(roles = {RoleType.ADMIN})
     public ResponseEntity<ApiResponse<Void>> register(@RequestBody HolidayRequest req) {
-        service.registerHoliday(req);
-        return ApiResponse.of("휴일 등록 성공");
+        try {
+            service.registerHoliday(req);
+            return ApiResponse.of("휴일 등록 성공");
+        } catch (IllegalStateException e) {
+            return ApiResponse.fail(400, e.getMessage());
+        }
     }
 
     // 2. 휴일 수정

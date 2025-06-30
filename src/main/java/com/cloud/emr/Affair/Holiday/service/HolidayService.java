@@ -32,19 +32,18 @@ public class HolidayService {
     /** 1. 휴일 등록 **/
     @Transactional(rollbackFor = Exception.class)
     public void registerHoliday(HolidayRequest req) {
-        try {
-            HolidayEntity e = HolidayEntity.builder()
-                    .holidayDate(req.getHolidayDate())
-                    .holidayNational(req.getHolidayNational())
-                    .holidayReason(req.getHolidayReason())
-                    .build();
-
-            holidayRepository.save(e);
-        } catch (Exception e) {
-            System.out.printf("휴일 등록 중 오류 발생: %s\n", e);
-            throw new RuntimeException("휴일 등록 중 오류 발생", e);
+        boolean exists = holidayRepository.existsByHolidayDate(req.getHolidayDate());
+        if (exists) {
+            throw new IllegalStateException("해당 날짜는 이미 휴일로 등록되어 있습니다.");
         }
 
+        HolidayEntity e = HolidayEntity.builder()
+                .holidayDate(req.getHolidayDate())
+                .holidayNational(req.getHolidayNational())
+                .holidayReason(req.getHolidayReason())
+                .build();
+
+        holidayRepository.save(e);
     }
 
     /** 2. 휴일 수정 **/
