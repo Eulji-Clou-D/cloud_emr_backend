@@ -77,7 +77,11 @@ public class HolidayService {
     @Transactional(readOnly = true)
     public HolidayResponse readHolidayByDay(String yearMonthDay) {
         LocalDate date = LocalDate.parse(yearMonthDay, DateTimeFormatter.ofPattern("yyyyMMdd"));
-        return new HolidayResponse(holidayRepository.findByHolidayDate(date));
+        HolidayEntity entity = holidayRepository.findByHolidayDate(date);
+        if (entity == null) {
+            throw new NoSuchElementException("해당 날짜는 휴일이 아닙니다.");
+        }
+        return new HolidayResponse(entity);
     }
 
     @Transactional(readOnly = true)
@@ -129,8 +133,11 @@ public class HolidayService {
 
     // ─────────────────────────────────────────────────────────
     private List<HolidayResponse> findBetween(LocalDate start, LocalDate end) {
-        List<HolidayEntity> list = holidayRepository.findAllByHolidayDateBetween(start, end);
-        return mapHolidayEntitiesToHolidayResponse(list);
+        List<HolidayEntity> entities = holidayRepository.findAllByHolidayDateBetween(start, end);
+        if (entities.isEmpty()) {
+            throw new NoSuchElementException("해당 날짜들에는 휴일이 없습니다.");
+        }
+        return mapHolidayEntitiesToHolidayResponse(entities);
     }
 
     // Maybe move this to core common?
