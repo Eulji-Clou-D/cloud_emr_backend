@@ -1,6 +1,6 @@
 # Holiday Documentation
 
-> **내용**: `HolidayDateType`, `checkDateString()`, 예외 시나리오, HolidayService의 공개 메서드와의 연동에 대한 자세한 문서화 및 사용 가이드.
+> **범위**: `HolidayDateType`, `checkDateString()`, 예외 시나리오, HolidayService의 공개 메서드와의 연동에 대한 자세한 문서화 및 사용 가이드.
 
 ## 1. 목적
 이 문서는 Clou-D EMR 백엔드의 Issue #104의 전체 구현과 영향을 설명하며, 정규표현식을 기반으로 한 날짜 문자열 파싱과 그 이후의 영향을 중심으로 설명합니다.
