@@ -4,6 +4,7 @@ import com.cloud.emr.Affair.Holiday.dto.HolidayRequest;
 import com.cloud.emr.Affair.Holiday.dto.HolidayResponse;
 import com.cloud.emr.Affair.Holiday.entity.HolidayEntity;
 import com.cloud.emr.Affair.Holiday.repository.HolidayRepository;
+import com.cloud.emr.Affair.Holiday.type.HolidayDateType;
 import com.cloud.emr.Main.User.entity.UserEntity;
 import com.cloud.emr.Main.User.repository.UserRepository;
 import com.cloud.emr.Main.User.type.RoleType;
@@ -75,6 +76,10 @@ public class HolidayService {
     /** 4. 휴일 목록 조회, 일 주 월 분기 년 기간 구분 **/
     @Transactional(readOnly = true)
     public HolidayResponse readHolidayByDay(String yearMonthDay) {
+        if (!HolidayDateType.DAY.getTypeName().equals(HolidayDateType.checkDateString(yearMonthDay))) {
+            throw new IllegalArgumentException("Expected [Day Date] format but received a different format for date string: " + yearMonthDay);
+        }
+
         LocalDate date = LocalDate.parse(yearMonthDay, DateTimeFormatter.ofPattern("yyyyMMdd"));
         HolidayEntity entity = holidayRepository.findByHolidayDate(date);
         if (entity == null) {
@@ -86,6 +91,10 @@ public class HolidayService {
     @Transactional(readOnly = true)
     public List<HolidayResponse> readHolidayByWeek(String yearMonthWeek) {
         // yearMonthWeek format: yyyyMMWd (e.g., 202507W1)
+        if (!HolidayDateType.WEEK.getTypeName().equals(HolidayDateType.checkDateString(yearMonthWeek))) {
+            throw new IllegalArgumentException("Expected [Week Date] format but received a different format for date string: " + yearMonthWeek);
+        }
+
         List<LocalDate> weekDaySpan = convertWeekToDaySpan(yearMonthWeek);
         LocalDate startDate = weekDaySpan.get(0);
         LocalDate endDate = weekDaySpan.get(1);
@@ -94,6 +103,10 @@ public class HolidayService {
 
     @Transactional(readOnly = true)
     public List<HolidayResponse> readHolidayByMonth(String yearMonth) {
+        if (!HolidayDateType.MONTH.getTypeName().equals(HolidayDateType.checkDateString(yearMonth))) {
+            throw new IllegalArgumentException("Expected [Month Date] format but received a different format for date string: " + yearMonth);
+        }
+
         YearMonth ym = YearMonth.parse(yearMonth, DateTimeFormatter.ofPattern("yyyyMM"));
         LocalDate startDate = ym.atDay(1);
         LocalDate endDate = ym.atEndOfMonth();
@@ -103,6 +116,10 @@ public class HolidayService {
     @Transactional(readOnly = true)
     public List<HolidayResponse> readHolidayByQuarter(String yearQuarter) {
         // yearQuarter format: YYYYQn (e.g., 2025Q1)
+        if (!HolidayDateType.QUARTER.getTypeName().equals(HolidayDateType.checkDateString(yearQuarter))) {
+            throw new IllegalArgumentException("Expected [Quarter Date] format but received a different format for date string: " + yearQuarter);
+        }
+
         String[] parts = yearQuarter.split("Q");
         int year = Integer.parseInt(parts[0]);
         int quarter = Integer.parseInt(parts[1]);
@@ -116,6 +133,10 @@ public class HolidayService {
 
     @Transactional(readOnly = true)
     public List<HolidayResponse> readHolidayByYear(String yearStr) {
+        if (!HolidayDateType.YEAR.getTypeName().equals(HolidayDateType.checkDateString(yearStr))) {
+            throw new IllegalArgumentException("Expected [Year Date] format but received a different format for date string: " + yearStr);
+        }
+
         int year = Integer.parseInt(yearStr);
         LocalDate startDate = LocalDate.of(year, 1, 1);
         LocalDate endDate = LocalDate.of(year, 12, 31);
@@ -124,6 +145,10 @@ public class HolidayService {
 
     @Transactional(readOnly = true)
     public List<HolidayResponse> readHolidayByRange(String startStr, String endStr) {
+        if (!HolidayDateType.checkRangeDate(startStr, endStr)) {
+            throw new IllegalArgumentException("Expected [Range Date] formats but received a different formats for date strings: " + startStr + ", " + endStr);
+        }
+
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyyMMdd");
         LocalDate startDate = LocalDate.parse(startStr, fmt);
         LocalDate endDate = LocalDate.parse(endStr, fmt);
