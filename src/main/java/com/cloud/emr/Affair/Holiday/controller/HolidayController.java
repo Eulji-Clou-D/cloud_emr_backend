@@ -50,8 +50,12 @@ public class HolidayController {
     @DeleteMapping("/{id}")
     @AuthRole(roles = {RoleType.ADMIN})
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
-        service.deleteHoliday(id);
-        return ApiResponse.of("휴일 삭제 성공");
+        try {
+            service.deleteHoliday(id);
+            return ApiResponse.of("휴일 삭제 성공");
+        } catch (RuntimeException e) {
+            return ApiResponse.fail(400, e.getMessage());
+        }
     }
 
     // 4. 휴일 목록 조회, 일 주 월 분기 년 기간에 따라 조회
