@@ -35,11 +35,15 @@ public class HolidayController {
     // 2. 휴일 수정
     @PutMapping("/{id}")
     @AuthRole(roles = {RoleType.ADMIN})
-    public ResponseEntity<ApiResponse<HolidayResponse>> update(
+    public ResponseEntity<? extends ApiResponse<?>> update(
             @PathVariable Long id,
             @RequestBody HolidayRequest req) {
-        HolidayResponse response = service.updateHoliday(id, req);
-        return ApiResponse.of("휴일 수정 성공", response);
+        try {
+            HolidayResponse response = service.updateHoliday(id, req);
+            return ApiResponse.of("휴일 수정 성공", response);
+        } catch (RuntimeException e) {
+            return ApiResponse.fail(400, e.getMessage());
+        }
     }
 
     // 3. 휴일 삭제
