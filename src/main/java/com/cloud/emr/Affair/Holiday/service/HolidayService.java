@@ -174,7 +174,7 @@ public class HolidayService {
                 .map(HolidayResponse::new)
                 .collect(Collectors.toList());
     }
-    public static List<LocalDate> convertWeekToDaySpan(String yearMonthWeek) {
+    private static List<LocalDate> convertWeekToDaySpan(String yearMonthWeek) {
         int weekNum = Integer.parseInt(yearMonthWeek.substring((yearMonthWeek.length()-1)));
         if (weekNum > 5) {
             throw new IllegalArgumentException("주차 값은 5 이하이어야 합니다.");
@@ -198,7 +198,7 @@ public class HolidayService {
         return List.of(weekStart, weekEnd);
     }
 
-    public static List<LocalDate> splitWeekToSevenDays(String yearMonthWeek) {
+    private static List<LocalDate> splitWeekToSevenDays(String yearMonthWeek) {
         int year = Integer.parseInt(yearMonthWeek.substring(0, 4));
         int month = Integer.parseInt(yearMonthWeek.substring(4, 6));
         int week = Integer.parseInt(yearMonthWeek.substring(7));
@@ -219,7 +219,7 @@ public class HolidayService {
         return result;
     }
 
-    public static int getTrueDaysInMonthWeek(List<LocalDate> input){
+    private static int getTrueDaysInMonthWeek(List<LocalDate> input){
         // Get ISO week and week-based year
         LocalDate weekEnd = input.get(0);
         int count = 0;
@@ -233,7 +233,7 @@ public class HolidayService {
         return count;
     }
 
-    public static LocalDate getWeekStartOfDate(LocalDate date){
+    private static LocalDate getWeekStartOfDate(LocalDate date){
         WeekFields wf = WeekFields.ISO;
         return date.with(wf.dayOfWeek(), 1);
     }
