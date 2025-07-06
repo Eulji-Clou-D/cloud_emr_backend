@@ -48,9 +48,6 @@ public enum HolidayDateType {
         // Iterate through the enum constants in their defined order
         Matcher matcher1 = HolidayDateType.DAY.getPattern().matcher(date1);
         Matcher matcher2 = HolidayDateType.DAY.getPattern().matcher(date2);
-        if (matcher1.matches() && matcher2.matches() && Integer.parseInt(date1) < Integer.parseInt(date2)) {
-            return true;
-        }
-        return false;
+        return matcher1.matches() && matcher2.matches() && Integer.parseInt(date1) < Integer.parseInt(date2);
     }
 }
