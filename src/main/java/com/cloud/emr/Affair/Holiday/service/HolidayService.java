@@ -5,21 +5,14 @@ import com.cloud.emr.Affair.Holiday.dto.HolidayResponse;
 import com.cloud.emr.Affair.Holiday.entity.HolidayEntity;
 import com.cloud.emr.Affair.Holiday.repository.HolidayRepository;
 import com.cloud.emr.Affair.Holiday.type.HolidayDateType;
-import com.cloud.emr.Main.User.entity.UserEntity;
-import com.cloud.emr.Main.User.repository.UserRepository;
-import com.cloud.emr.Main.User.type.RoleType;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.time.temporal.ChronoField;
 import java.time.temporal.WeekFields;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -33,6 +26,10 @@ public class HolidayService {
     /** 1. 휴일 등록 **/
     @Transactional(rollbackFor = Exception.class)
     public void registerHoliday(HolidayRequest req) {
+        if (!HolidayDateType.DAY.getTypeName().equals(HolidayDateType.checkDateString(req.getHolidayDate().format(DateTimeFormatter.ofPattern("yyyyMMdd"))))) {
+            throw new IllegalArgumentException("Expected [Day Date] format but received a different format for date string: " + req.getHolidayDate().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+        }
+
         boolean exists = holidayRepository.existsByHolidayDate(req.getHolidayDate());
         if (exists) {
             throw new IllegalStateException("해당 날짜는 이미 휴일로 등록되어 있습니다.");
@@ -50,6 +47,10 @@ public class HolidayService {
     /** 2. 휴일 수정 **/
     @Transactional(rollbackFor = Exception.class)
     public HolidayResponse updateHoliday(Long id, HolidayRequest req) {
+        if (!HolidayDateType.DAY.getTypeName().equals(HolidayDateType.checkDateString(req.getHolidayDate().format(DateTimeFormatter.ofPattern("yyyyMMdd"))))) {
+            throw new IllegalArgumentException("Expected [Day Date] format but received a different format for date string: " + req.getHolidayDate().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+        }
+
         HolidayEntity e = holidayRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("휴일 정보를 찾을 수 없습니다."));
 
