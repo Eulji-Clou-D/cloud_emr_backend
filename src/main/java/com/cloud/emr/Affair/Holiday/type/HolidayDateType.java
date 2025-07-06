@@ -51,6 +51,6 @@ public enum HolidayDateType {
         if (matcher1.matches() && matcher2.matches() && Integer.parseInt(date1) < Integer.parseInt(date2)) {
             return true;
         }
-        throw new IllegalArgumentException("Wrong date format: " + date1 + date2);
+        return false;
     }
 }
