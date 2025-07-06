@@ -13,7 +13,7 @@ public enum HolidayDateType {
     MONTH("Month", "^[2-9]\\d{5}$"),                // 월 (Month)
     QUARTER("Quarter", "^[2-9]\\d{3}Q[1-4]$"),      // 분기 (Quarter)
     YEAR("Year", "^[2-9]\\d{3}$"),                  // 년 (Year)
-    RANGE("Range", "^[2-9]\\d{7}$");                // 사용자 정의 기간 (User-defined range)
+    RANGE("Range", "");                // 사용자 정의 기간 (User-defined range)
 
     private final String typeName;
     private final String regex;
@@ -38,5 +38,19 @@ public enum HolidayDateType {
             }
         }
         return null; // No matching format found
+    }
+
+    public static Boolean checkRangeDate(String date1, String date2) {
+        if (date1 == null || date1.isEmpty() || date2 == null || date2.isEmpty()) {
+            return false;
+        }
+
+        // Iterate through the enum constants in their defined order
+        Matcher matcher1 = HolidayDateType.DAY.getPattern().matcher(date1);
+        Matcher matcher2 = HolidayDateType.DAY.getPattern().matcher(date2);
+        if (matcher1.matches() && matcher2.matches() && Integer.parseInt(date1) < Integer.parseInt(date2)) {
+            return true;
+        }
+        return false; // No matching format found
     }
 }
