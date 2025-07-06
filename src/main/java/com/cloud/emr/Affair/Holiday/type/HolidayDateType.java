@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 public enum HolidayDateType {
     // More specific patterns first
     DAY("Day", "^[2-9]\\d{7}$"),                    // 일 (Day)
-    WEEK("Week", "^[2-9]\\d{5}W\\d{1}$"),           // 주 (Week)
+    WEEK("Week", "^[2-9]\\d{5}W[1-5]$"),           // 주 (Week)
     MONTH("Month", "^[2-9]\\d{5}$"),                // 월 (Month)
     QUARTER("Quarter", "^[2-9]\\d{3}Q[1-4]$"),      // 분기 (Quarter)
     YEAR("Year", "^[2-9]\\d{3}$"),                  // 년 (Year)
