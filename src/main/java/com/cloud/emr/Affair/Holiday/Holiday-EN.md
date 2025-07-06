@@ -14,11 +14,11 @@ The `HolidayDateType` enum defines **6 specific date patterns** recognized by th
 
 | Format  | Example              | Regex Pattern                                | Use Case                             |
 |---------|----------------------|----------------------------------------------|--------------------------------------|
-| DAY     | 20250501             | `^[2-9]\d{7}$`                                | Extract holiday on a specific date   |
-| WEEK    | 202505W1             | `^[2-9]\d{5}W\d{1-5}$`                        | Extract weekly holidays              |
-| MONTH   | 202505               | `^[2-9]\d{5}$`                                | Extract monthly holidays             |
-| QUARTER | 2025Q1               | `^[2-9]\d{3}Q[1-4]$`                          | Extract quarterly holidays           |
-| YEAR    | 2025                 | `^[2-9]\d{3}$`                                | Extract yearly holidays              |
+| DAY     | 20250501             | `^[2-9]\d{7}$`                               | Extract holiday on a specific date   |
+| WEEK    | 202505W1             | `^[2-9]\d{5}W[1-5]$`                         | Extract weekly holidays              |
+| MONTH   | 202505               | `^[2-9]\d{5}$`                               | Extract monthly holidays             |
+| QUARTER | 2025Q1               | `^[2-9]\d{3}Q[1-4]$`                         | Extract quarterly holidays           |
+| YEAR    | 2025                 | `^[2-9]\d{3}$`                               | Extract yearly holidays              |
 | RANGE   | 20250501, 20250510   | `^[2-9]\d{7}$` for both, and `date1 < date2` | Extract holidays within date range   |
 
 > **Note**: Normally Enum ordering matters — more specific patterns like `RANGE` should be checked before broader patterns like `DAY`, but it didn't matter for Holiday in this project
@@ -27,15 +27,15 @@ The `HolidayDateType` enum defines **6 specific date patterns** recognized by th
 
 ## 3. Holiday API Documentation
 
-```json
-//HolidayRequest 
+```text
+[HolidayRequest]
 {
   LocalDate holidayDate;
   Boolean holidayNational;
   String holidayReason;
 }
 
-// HolidayResponse
+[HolidayResponse]
 {
   Long id;
   LocalDate holidayDate;
