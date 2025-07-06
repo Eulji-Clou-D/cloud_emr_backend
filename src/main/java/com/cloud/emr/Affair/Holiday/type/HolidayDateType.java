@@ -27,7 +27,7 @@ public enum HolidayDateType {
 
     public static String checkDateString(String date) {
         if (date == null || date.isEmpty()) {
-            return null;
+            throw new IllegalArgumentException("Date string cannot be null or empty.");
         }
 
         // Iterate through the enum constants in their defined order
@@ -37,12 +37,12 @@ public enum HolidayDateType {
                 return type.getTypeName();
             }
         }
-        return null; // No matching format found
+        throw new IllegalArgumentException("Unknown date format: " + date);
     }
 
     public static Boolean checkRangeDate(String date1, String date2) {
         if (date1 == null || date1.isEmpty() || date2 == null || date2.isEmpty()) {
-            return false;
+            throw new IllegalArgumentException("Date string cannot be null or empty.");
         }
 
         // Iterate through the enum constants in their defined order
@@ -51,6 +51,6 @@ public enum HolidayDateType {
         if (matcher1.matches() && matcher2.matches() && Integer.parseInt(date1) < Integer.parseInt(date2)) {
             return true;
         }
-        return false; // No matching format found
+        throw new IllegalArgumentException("Wrong date format: " + date1 + date2);
     }
 }
