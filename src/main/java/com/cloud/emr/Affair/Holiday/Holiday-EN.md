@@ -239,14 +239,14 @@ The `HolidayDateType` enum defines **6 specific date patterns** recognized by th
 
 - **Exception Scenarios**
 
-| Input          | Exception Triggered                | Message                                         |
-|----------------|------------------------------------|-------------------------------------------------|
-| `null`         | Yes                                | `Date string cannot be null or empty.`          |
-| `""`           | Yes                                | `Date string cannot be null or empty.`          |
-| `2025-05-01`   | Yes                                | `Unknown date format: 2025-05-01`               |
-| `2025W6`       | Yes                                | `Unknown date format: 2025W6`          |
-| `2025Q5`       | Yes                                | `Unknown date format: 2025Q5`                   |
-| `20250230`     | No (regex passes, semantics wrong) | *(Parses as DAY, left to caller for semantics)* |
+| Input        | Exception Triggered                | Message                                         |
+|--------------|------------------------------------|-------------------------------------------------|
+| `null`       | Yes                                | `Date string cannot be null or empty.`          |
+| `""`         | Yes                                | `Date string cannot be null or empty.`          |
+| `2025-05-01` | Yes                                | `Unknown date format: 2025-05-01`               |
+| `2025W6`     | Yes                                | `Unknown date format: 2025W6`                   |
+| `2025Q5`     | Yes                                | `Unknown date format: 2025Q5`                   |
+| `20250230`   | No (regex passes, semantics wrong) | *(Parses as DAY, left to caller for semantics)* |
 
 #### `checkRangeDate(String date1, String date2)`
 - **Behavior**
@@ -257,14 +257,14 @@ The `HolidayDateType` enum defines **6 specific date patterns** recognized by th
 
 - **Result Scenarios**
 
-| date1       | date2       | Result     | Notes                                              |
-|-------------|-------------|------------|----------------------------------------------------|
-| `null`      | `20250510`  | Exception  | Input is null                                      |
-| `""`        | `20250510`  | Exception  | Input is empty                                     |
-| `20250510`  | `""`        | Exception  | Input is empty                                     |
-| `20250510`  | `20250501`  | false      | Format valid, but date1 > date2                    |
-| `2025-05-01`| `20250510`  | false      | Format invalid (dash used)                         |
-| `20250501`  | `20250510`  | true       | Valid DAY format and date1 < date2                |
+| date1        | date2      | Result    | Notes                              |
+|--------------|------------|-----------|------------------------------------|
+| `null`       | `20250510` | Exception | Input is null                      |
+| `""`         | `20250510` | Exception | Input is empty                     |
+| `20250510`   | `""`       | Exception | Input is empty                     |
+| `20250510`   | `20250501` | false     | Format valid, but date1 > date2    |
+| `2025-05-01` | `20250510` | false     | Format invalid (dash used)         |
+| `20250501`   | `20250510` | true      | Valid DAY format and date1 < date2 |
 
 ### HolidayService
 
