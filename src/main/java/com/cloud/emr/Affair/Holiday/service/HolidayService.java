@@ -26,17 +26,17 @@ public class HolidayService {
     /** 1. 휴일 등록 **/
     @Transactional(rollbackFor = Exception.class)
     public void registerHoliday(HolidayRequest req) {
-        if (!HolidayDateType.DAY.getTypeName().equals(HolidayDateType.checkDateString(req.getHolidayDate().format(DateTimeFormatter.ofPattern("yyyyMMdd"))))) {
-            throw new IllegalArgumentException("Expected [Day Date] format but received a different format for date string: " + req.getHolidayDate().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+        if (!HolidayDateType.DAY.getTypeName().equals(HolidayDateType.checkDateString(req.getHolidayDate()))) { //.format(DateTimeFormatter.ofPattern("yyyyMMdd"))
+            throw new IllegalArgumentException("Expected [Day Date] format but received a different format for date string: " + req.getHolidayDate());
         }
 
-        boolean exists = holidayRepository.existsByHolidayDate(req.getHolidayDate());
+        boolean exists = holidayRepository.existsByHolidayDate(LocalDate.parse(req.getHolidayDate(), DateTimeFormatter.ofPattern("yyyyMMdd")));
         if (exists) {
             throw new IllegalStateException("해당 날짜는 이미 휴일로 등록되어 있습니다.");
         }
 
         HolidayEntity e = HolidayEntity.builder()
-                .holidayDate(req.getHolidayDate())
+                .holidayDate(LocalDate.parse(req.getHolidayDate(), DateTimeFormatter.ofPattern("yyyyMMdd")))
                 .holidayNational(req.getHolidayNational())
                 .holidayReason(req.getHolidayReason())
                 .build();
@@ -47,8 +47,8 @@ public class HolidayService {
     /** 2. 휴일 수정 **/
     @Transactional(rollbackFor = Exception.class)
     public HolidayResponse updateHoliday(Long id, HolidayRequest req) {
-        if (!HolidayDateType.DAY.getTypeName().equals(HolidayDateType.checkDateString(req.getHolidayDate().format(DateTimeFormatter.ofPattern("yyyyMMdd"))))) {
-            throw new IllegalArgumentException("Expected [Day Date] format but received a different format for date string: " + req.getHolidayDate().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+        if (!HolidayDateType.DAY.getTypeName().equals(HolidayDateType.checkDateString(req.getHolidayDate()))) {  //.format(DateTimeFormatter.ofPattern("yyyyMMdd"))
+            throw new IllegalArgumentException("Expected [Day Date] format but received a different format for date string: " + req.getHolidayDate());
         }
 
         HolidayEntity e = holidayRepository.findById(id)
@@ -57,7 +57,7 @@ public class HolidayService {
         // 엔티티 새로 빌드 후 저장
         HolidayEntity updated = HolidayEntity.builder()
                 .id(e.getId())
-                .holidayDate(req.getHolidayDate() != null ? req.getHolidayDate() : e.getHolidayDate())
+                .holidayDate(req.getHolidayDate() != null ? LocalDate.parse(req.getHolidayDate(), DateTimeFormatter.ofPattern("yyyyMMdd")) : e.getHolidayDate())
                 .holidayNational(req.getHolidayNational() != null ? req.getHolidayNational() : e.getHolidayNational())
                 .holidayReason(req.getHolidayReason() != null ? req.getHolidayReason() : e.getHolidayReason())
                 .build();

@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class HolidayRequest {
 
-    private LocalDate holidayDate;
+    private String holidayDate;
     private Boolean holidayNational;
     private String holidayReason;
 
