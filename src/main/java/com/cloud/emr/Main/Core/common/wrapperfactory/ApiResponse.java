@@ -1,87 +1,54 @@
 package com.cloud.emr.Main.Core.common.wrapperfactory;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.http.ResponseEntity;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import org.springframework.http.HttpStatus;
 
 @Getter
-@Builder
-public class ApiResponse<T> {
-    @Builder.Default
-    private boolean success = true;
-    @Builder.Default
-    private int code = 200;
-    private String message;
-    private T data;
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
+public class ApiResponse<T> extends BaseResponse<T> {
 
-    public static ResponseEntity<ApiResponse<Void>> of(String message) {
-        ApiResponse<Void> body = ApiResponse.<Void>builder()
+    private HttpStatus status = HttpStatus.OK;
+
+    public static ApiResponse<Void> of(String message) {
+        return ApiResponse.<Void>builder()
                 .message(message)
                 .build();
-        return ResponseEntity.status(body.getCode()).body(body);
     }
 
-    public static <T> ResponseEntity<ApiResponse<T>> of(T data) {
-        ApiResponse<T> body = ApiResponse.<T>builder()
+    public static <T> ApiResponse<T> of(T data) {
+        return ApiResponse.<T>builder()
                 .message("요청이 성공적으로 처리되었습니다.")
                 .data(data)
                 .build();
-        return ResponseEntity.status(body.getCode()).body(body);
     }
 
-    public static <T> ResponseEntity<ApiResponse<T>> of(String message, T data) {
-        ApiResponse<T> body = ApiResponse.<T>builder()
+    public static <T> ApiResponse<T> of(String message, T data) {
+        return ApiResponse.<T>builder()
                 .message(message)
                 .data(data)
                 .build();
-        return ResponseEntity.status(body.getCode()).body(body);
     }
 
-    public static <T> ResponseEntity<ApiResponse<T>> of(int code, String message, T data) {
-        ApiResponse<T> body = ApiResponse.<T>builder()
-                .code(code)
+    public static ApiResponse<Void> of(HttpStatus status, String message) {
+        return ApiResponse.<Void>builder()
+                .status(status)
+                .message(message)
+                .build();
+    }
+
+    public static <T> ApiResponse<T> of(HttpStatus status, String message, T data) {
+        return ApiResponse.<T>builder()
+                .status(status)
                 .message(message)
                 .data(data)
                 .build();
-        return ResponseEntity.status(code).body(body);
     }
 
-    public static ResponseEntity<ApiResponse<Void>> fail(String message) {
-        ApiResponse<Void> body = ApiResponse.<Void>builder()
-                .success(false)
-                .code(500)
-                .message(message)
-                .build();
-        return ResponseEntity.status(body.getCode()).body(body);
-    }
 
-    public static <T> ResponseEntity<ApiResponse<T>> fail(T data) {
-        ApiResponse<T> body = ApiResponse.<T>builder()
-                .success(false)
-                .code(500)
-                .message("요청 처리를 실패했습니다.")
-                .data(data)
-                .build();
-        return ResponseEntity.status(body.getCode()).body(body);
-    }
-
-    public static ResponseEntity<ApiResponse<Void>> fail(int code, String message) {
-        ApiResponse<Void> body = ApiResponse.<Void>builder()
-                .success(false)
-                .code(code)
-                .message(message)
-                .build();
-        return ResponseEntity.status(code).body(body);
-    }
-
-    public static <T> ResponseEntity<ApiResponse<T>> fail(int code, String message, T data) {
-        ApiResponse<T> body = ApiResponse.<T>builder()
-                .success(false)
-                .code(code)
-                .message(message)
-                .data(data)
-                .build();
-        return ResponseEntity.status(code).body(body);
-    }
 
 }

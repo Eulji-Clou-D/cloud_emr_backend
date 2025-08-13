@@ -1,11 +1,10 @@
 package com.cloud.emr.Main.Core.common.type;
 
 import lombok.Getter;
-import org.hibernate.Internal;
 import org.springframework.http.HttpStatus;
 
 @Getter
-public enum ErrorCode {
+public enum ErrorCodeEnum {
     INVALID_INPUT(400, HttpStatus.BAD_REQUEST, "잘못된 입력값입니다."),
     UNAUTHORIZED(401, HttpStatus.UNAUTHORIZED, "인증이 필요합니다."),
     FORBIDDEN(403, HttpStatus.FORBIDDEN, "접근 권한이 없습니다."),
@@ -18,7 +17,7 @@ public enum ErrorCode {
     private final HttpStatus status;
     private final String message;
 
-    ErrorCode(int code, HttpStatus status, String message) {
+    ErrorCodeEnum(int code, HttpStatus status, String message) {
         this.code = code;
         this.status = status;
         this.message = message;
