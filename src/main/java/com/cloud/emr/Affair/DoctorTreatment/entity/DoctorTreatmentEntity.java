@@ -19,7 +19,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class DoctorTreatmentEntity {
     @Id
-    @Column(name = "doctorTreatment_id", nullable = false, unique = true)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "doctor_treatment_id", nullable = false)
+
     private Long doctorTreatmentId;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -27,14 +29,14 @@ public class DoctorTreatmentEntity {
     private PatientEntity patientEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
     private UserEntity userEntity;
 
-    @Column(name = "doctorTreatment_starttime")
+    @Column(name = "doctor_treatment_starttime", nullable = false)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime doctorTreatmentStart;  //진료 시작 시간
 
-    @Column(name = "doctorTreatment_endtime")
+    @Column(name = "doctor_treatment_endtime", nullable = false)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime doctorTreatmentEnd;  //진료 종료 시간
 }
